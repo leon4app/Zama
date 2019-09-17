@@ -1,0 +1,16 @@
+PODS:
+  - Zama (0.1.0)
+
+DEPENDENCIES:
+  - Zama (from `../`)
+
+EXTERNAL SOURCES:
+  Zama:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Zama: d4ba6835f1b99e578f08815516db12f194dcbfca
+
+PODFILE CHECKSUM: 2a8bbe62184d6680edb14dc788d08da5b52ed769
+
+COCOAPODS: 1.7.5
