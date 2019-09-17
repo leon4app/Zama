@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'Zama_Example' do
+  pod 'Zama', :path => '../'
+
+  target 'Zama_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
