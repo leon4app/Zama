@@ -2,8 +2,8 @@
 //  ZMAppDelegate.h
 //  Zama
 //
-//  Created by leon4app on 09/17/2019.
-//  Copyright (c) 2019 leon4app. All rights reserved.
+//  Created by Leon on 09/17/2019.
+//  Copyright (c) 2019 Zama. All rights reserved.
 //
 
 @import UIKit;

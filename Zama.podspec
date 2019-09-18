@@ -8,10 +8,18 @@ Zamazenta is a pokemon, let's get it and protect our app from crashing!
 
   s.homepage         = 'https://github.com/leon4app/Zama'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'leon4app' => 'leon4w@outlook.com' }
+  s.author           = { 'Leon' => 'leon4w@outlook.com' }
   s.source           = { :git => 'https://github.com/leon4app/Zama.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'Zama/Classes/**/*'
+  s.public_header_files = 'Zama/Classes/Zama.h'
+  s.test_spec 'Tests' do |test_spec|
+      test_spec.source_files = 'Zama/Tests/**/*'
+  end
+
+  s.pod_target_xcconfig = {
+    'CLANG_WARN_STRICT_PROTOTYPES' => 'NO',
+  }
 end
