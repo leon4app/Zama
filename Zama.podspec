@@ -15,6 +15,7 @@ Zamazenta is a pokemon, let's get it and protect our app from crashing!
 
   s.source_files = 'Zama/Classes/**/*'
   s.public_header_files = 'Zama/Classes/Zama.h'
+  
   s.test_spec 'Tests' do |test_spec|
       test_spec.source_files = 'Zama/Tests/**/*'
   end

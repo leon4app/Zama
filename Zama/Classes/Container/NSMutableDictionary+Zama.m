@@ -22,10 +22,10 @@ XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, vo
 XXStaticHookEnd
 
 XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, void, @selector(setObject:forKeyedSubscript:), (id)anObject, (id<NSCopying>)aKey ) {
-    if (anObject && aKey) {
+    if (aKey) {
         XXHookOrgin(anObject,aKey);
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@",
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil",
                             [self class], NSStringFromSelector(@selector(setObject:forKeyedSubscript:)),aKey, anObject];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
     }
