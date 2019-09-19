@@ -25,7 +25,7 @@
         case ZMProtectTypeNotification: return @"ZMProtectTypeNotification";
         case ZMProtectTypeTimer: return @"ZMProtectTypeTimer";
         case ZMProtectTypeDanglingPointer: return @"ZMProtectTypeDanglingPointer";
-        default: return [NSString stringWithFormat:@"%lu", type];
+        default: return [NSString stringWithFormat:@"%lu", (unsigned long)type];
     }
 }
 

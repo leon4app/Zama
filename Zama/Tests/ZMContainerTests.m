@@ -31,7 +31,7 @@
     // insert nil
     NSMutableArray *mutableArray = @[@"", _nilStr].mutableCopy;
     // objectAtIndexedSubscript
-    mutableArray[2];
+    (void)mutableArray[2];
     // objectAtIndex
     [mutableArray objectAtIndex:4];
     // addObject
@@ -52,7 +52,7 @@
     NSMutableDictionary *dict;
     dict = [NSMutableDictionary dictionary];
 
-    dict[_nilStr];
+    (void)dict[_nilStr];
 
     [dict objectForKey:_nilStr];
 
