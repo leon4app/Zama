@@ -218,6 +218,8 @@ void * zamazenta_hook_imp_function(Class clazz,
 BOOL zamazenta_hook_check_block(Class objectClass, Class hookClass,void* associatedKey);
 Class zamazenta_hook_getClassFromObject(id object);
 
+void zamazenta_exchange_class_method(Class anClass, SEL orginalMethodSel, SEL newMethodSel);
+void zamazenta_exchange_instance_method(Class anClass, SEL orginalMethodSel, SEL newMethodSel);
 
 // 启动
 void zamazenta_hook_load_group(NSString* groupName);

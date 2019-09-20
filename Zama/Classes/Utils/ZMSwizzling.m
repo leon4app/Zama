@@ -70,6 +70,47 @@ Class zamazenta_hook_getClassFromObject(id object) {
     }
 }
 
+/**
+*  类方法的交换
+*
+*  @param anClass    哪个类
+*  @param orginalMethodSel 原本的方法
+*  @param newMethodSel 要替换成的方法
+*/
+void zamazenta_exchange_class_method(Class anClass, SEL orginalMethodSel, SEL newMethodSel) {
+    Method method1 = class_getClassMethod(anClass, orginalMethodSel);
+    Method method2 = class_getClassMethod(anClass, newMethodSel);
+    method_exchangeImplementations(method1, method2);
+}
+/**
+*  对象方法的交换
+*
+*  @param anClass    哪个类
+*  @param orginalMethodSel 原本的方法
+*  @param newMethodSel 要替换成的方法
+*/
+void zamazenta_exchange_instance_method(Class anClass, SEL orginalMethodSel, SEL newMethodSel) {
+    Method originalMethod = class_getInstanceMethod(anClass, orginalMethodSel);
+    Method swizzledMethod = class_getInstanceMethod(anClass, newMethodSel);
+
+    BOOL didAddMethod =
+    class_addMethod(anClass,
+                    orginalMethodSel,
+                    method_getImplementation(swizzledMethod),
+                    method_getTypeEncoding(swizzledMethod));
+
+    if (didAddMethod) {
+        class_replaceMethod(anClass,
+                            newMethodSel,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    }
+
+    else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
 #ifndef __LP64__
 
 #define mach_header_ mach_header

@@ -10,6 +10,12 @@
 #import "Zama.h"
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
+#import "ZamaProtectProtocol.h"
+
+#import "NSNull+Zama.h"
+@interface Zama ()
+
+@end
 
 @implementation Zama
 
@@ -41,7 +47,7 @@
 + (void)registerNSNull {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        zamazenta_hook_load_group(XXForOCString(ProtectNull));
+        [NSNull zmStartProtect];
     });
 }
 
