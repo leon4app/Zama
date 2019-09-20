@@ -34,7 +34,7 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
 
 @protocol ZMExceptionRecordHandlerProtocol <NSObject>
 
-- (void)recordException:(ZMExceptionRecord *)error;
+- (void)recordException:(ZMExceptionRecord *)record;
 
 @end
 
