@@ -18,13 +18,31 @@
 }
 
 - (void)testNSArray {
-    NSArray *array = [NSArray array];
+    NSArray *array;
+    id value;
+
+    // __NSSingleObjectArrayI
     // insert nil
     array = @[@"", _nilStr];
     // objectAtIndexedSubscript
-    id value = array[2];
+    value = array[9];
     // objectAtIndex
-    value = [array objectAtIndex:2];
+    value = [array objectAtIndex:9];
+
+    // __NSArrayI
+    // insert nil
+    array = @[@"", @"", @"", _nilStr];
+    // objectAtIndexedSubscript
+    value = array[9];
+    // objectAtIndex
+    value = [array objectAtIndex:9];
+
+    // __NSArray0
+    array = [NSArray array];
+    // objectAtIndexedSubscript
+    value = array[9];
+    // objectAtIndex
+    value = [array objectAtIndex:9];
 }
 
 - (void)testNSMutableArray {
