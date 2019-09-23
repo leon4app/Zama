@@ -6,7 +6,6 @@
 //  Copyright (c) 2019 Zama. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
 

@@ -8,83 +8,88 @@
 
 #import "ZMRecordCollection.h"
 #import "ZMSwizzling.h"
+@implementation NSMutableArray (Zama)
++ (void)zmStartProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class arrayMClass = NSClassFromString(@"__NSArrayM");
 
-#pragma mark - Subscript
-XXStaticHookPrivateClass(__NSArrayM, NSMutableArray *, ProtectCont, id, @selector(objectAtIndexedSubscript:), (NSUInteger)index) {
+        //objectAtIndex: iOS 9-10
+        zamazenta_exchange_instance_method(arrayMClass, @selector(objectAtIndex:), @selector(zm_objectAtIndex:));
+
+        //objectAtIndexedSubscript: iOS 11+
+        zamazenta_exchange_instance_method(arrayMClass, @selector(objectAtIndexedSubscript:), @selector(zm_objectAtIndexedSubscript:));
+
+        //insertObject:atIndex:
+        zamazenta_exchange_instance_method(arrayMClass, @selector(insertObject:atIndex:), @selector(zm_insertObject:atIndex:));
+
+        //addObject:
+        zamazenta_exchange_instance_method(arrayMClass, @selector(addObject:), @selector(zm_addObject:));
+
+        //setObject:atIndexedSubscript:
+        zamazenta_exchange_instance_method(arrayMClass, @selector(setObject:atIndexedSubscript:), @selector(zm_setObject:atIndexedSubscript:));
+
+        //removeObjectAtIndex:
+        zamazenta_exchange_instance_method(arrayMClass, @selector(removeObjectAtIndex:), @selector(zm_removeObjectAtIndex:));
+    });
+}
+
+- (id)zm_objectAtIndex:(NSUInteger)index {
     if (index >= self.count) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]",
-                            [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)),@(index), @(self.count)];
-        NSString *callStackSymbols = [NSThread.callStackSymbols componentsJoinedByString:@"\n"];
-        NSLog(@"callStackSymbols: \n%@",callStackSymbols);
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
         return nil;
     }
-    
-    return XXHookOrgin(index);
+    return [self zm_objectAtIndex:index];
 }
-XXStaticHookEnd
 
-XXStaticHookPrivateClass(__NSArrayM, NSMutableArray *, ProtectCont, void, @selector(setObject:atIndexedSubscript:), (id) obj, (NSUInteger) idx) {
+- (id)zm_objectAtIndexedSubscript:(NSUInteger)index {
+    if (index >= self.count) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)), @(index), @(self.count)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
+        return nil;
+    }
+    return [self zm_objectAtIndexedSubscript:index];
+}
+
+- (void)zm_insertObject:(id)anObject atIndex:(NSUInteger)index {
+    if (anObject) {
+        [self zm_insertObject:anObject atIndex:index];
+    } else {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object cannot be nil", [self class], NSStringFromSelector(@selector(insertObject:atIndex:))];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
+    }
+}
+
+- (void)zm_setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
     if (obj) {
         if (idx > self.count) {
-            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds [0 .. %@]",
-                                [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:)) ,@(idx), @(self.count)];
+            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:)) ,@(idx), @(self.count)];
             [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
         } else {
-            XXHookOrgin(obj, idx);
+            return [self zm_setObject:obj atIndexedSubscript:idx];
         }
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object appear nil obj is %@",
-                            [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:)), obj];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object appear nil", [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:))];
         [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
     }
 }
-XXStaticHookEnd
 
-#pragma mark - Getter
-XXStaticHookPrivateClass(__NSArrayM, NSMutableArray *, ProtectCont, id, @selector(objectAtIndex:), (NSUInteger)index) {
-    if (index >= self.count) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]",
-                            [self class], NSStringFromSelector(@selector(objectAtIndex:)),@(index), @(self.count)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
-        return nil;
-    }
-
-    return XXHookOrgin(index);
-}
-XXStaticHookEnd
-
-#pragma mark - Setter
-XXStaticHookPrivateClass(__NSArrayM, NSMutableArray *, ProtectCont, void, @selector(addObject:), (id)anObject ) {
+- (void)zm_addObject:(id)anObject {
     if (anObject) {
-        XXHookOrgin(anObject);
+        [self zm_addObject:anObject];
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object cannot be nil",
-                            [self class], NSStringFromSelector(@selector(addObject:))];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object cannot be nil", [self class], NSStringFromSelector(@selector(addObject:))];
         [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
     }
 }
-XXStaticHookEnd
 
-XXStaticHookPrivateClass(__NSArrayM, NSMutableArray *, ProtectCont, void, @selector(insertObject:atIndex:), (id)anObject, (NSUInteger)index) {
-    if (anObject) {
-        XXHookOrgin(anObject, index);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: object cannot be nil",
-                            [self class], NSStringFromSelector(@selector(insertObject:atIndex:))];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
-    }
-}
-XXStaticHookEnd
-
-XXStaticHookPrivateClass(__NSArrayM,NSMutableArray *, ProtectCont, void, @selector(removeObjectAtIndex:), (NSUInteger)index) {
+- (void)zm_removeObjectAtIndex:(NSUInteger)index {
     if (index >= self.count) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds [0 .. %@]",
-                            [self class], NSStringFromSelector(@selector(removeObjectAtIndex:)) ,@(index), @(self.count)];
-        
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(removeObjectAtIndex:)) ,@(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
     } else {
-        XXHookOrgin(index);
+        [self zm_removeObjectAtIndex:index];
     }
 }
-XXStaticHookEnd
+@end

@@ -75,18 +75,45 @@
 }
 
 - (void)testNSMutableArray {
+    id value;
     // insert nil
     NSMutableArray *mutableArray = @[@"", _nilStr].mutableCopy;
+    XCTAssert(mutableArray.count == 1);
     // objectAtIndexedSubscript
-    (void)mutableArray[2];
+    value = mutableArray[0];
+    XCTAssertEqual(value, @"");
+    value = mutableArray[2];
+    XCTAssertNil(value);
+
     // objectAtIndex
-    [mutableArray objectAtIndex:4];
+    value = [mutableArray objectAtIndex:0];
+    XCTAssertEqual(value, @"");
+    value = [mutableArray objectAtIndex:4];
+    XCTAssertNil(value);
     // addObject
     [mutableArray addObject:_nilStr];
+    XCTAssert(mutableArray.count == 1);
+    [mutableArray addObject:@"a"];
+    XCTAssert(mutableArray.count == 2);
     // insertObject:atIndex
-    [mutableArray insertObject:_nilStr atIndex:2];
+    [mutableArray insertObject:_nilStr atIndex:3];
+    XCTAssert(mutableArray.count == 2);
+    [mutableArray insertObject:@"b" atIndex:1];
+    XCTAssertEqual(mutableArray[1], @"b");
     // removeObjectAtIndex
     [mutableArray removeObjectAtIndex:4];
+    XCTAssert(mutableArray.count == 3);
+    [mutableArray removeObjectAtIndex:2];
+    XCTAssert(mutableArray.count == 2);
+
+    // setObject:atIndexedSubscript
+    mutableArray[1] = @"aa";
+    XCTAssert(mutableArray.count == 2);
+    mutableArray[1] = nil;
+    mutableArray[2] = @"aa";
+    XCTAssert(mutableArray.count == 3);
+    mutableArray[4] = @"aa";
+    XCTAssert(mutableArray.count == 3);
 }
 
 - (void)testNSDictionary {
