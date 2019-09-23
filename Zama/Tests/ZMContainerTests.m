@@ -19,30 +19,59 @@
 
 - (void)testNSArray {
     NSArray *array;
+    NSArray *valueArray;
     id value;
 
     // __NSSingleObjectArrayI
     // insert nil
     array = @[@"", _nilStr];
     // objectAtIndexedSubscript
+    value = array[0];
+    XCTAssertEqual(value, @"");
     value = array[9];
+    XCTAssertNil(value);
     // objectAtIndex
+    value = [array objectAtIndex:0];
+    XCTAssertEqual(value, @"");
     value = [array objectAtIndex:9];
+    XCTAssertNil(value);
+    valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)]];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 1);
+    valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 8)]];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 0);
 
     // __NSArrayI
     // insert nil
-    array = @[@"", @"", @"", _nilStr];
-    // objectAtIndexedSubscript
+    array = @[@"1", @"2", @"3", _nilStr];
+    value = array[0];
+    XCTAssertEqual(value, @"1");
     value = array[9];
+    XCTAssertNil(value);
     // objectAtIndex
+    value = [array objectAtIndex:1];
+    XCTAssertEqual(value, @"2");
     value = [array objectAtIndex:9];
+    XCTAssertNil(value);
+    valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)]];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 2);
+    valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 8)]];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 0);
 
     // __NSArray0
     array = [NSArray array];
     // objectAtIndexedSubscript
     value = array[9];
+    XCTAssertNil(value);
     // objectAtIndex
     value = [array objectAtIndex:9];
+    XCTAssertNil(value);
+    [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 8)]];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 0);
 }
 
 - (void)testNSMutableArray {
