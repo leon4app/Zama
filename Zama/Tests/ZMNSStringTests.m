@@ -76,12 +76,12 @@
     XCTAssert([newStr isEqualToString:@"aa123456789"]);
 }
 
-- (void)testStringByReplacingCharactersInRangeWithString {
-    NSString *newStr;
-    newStr = [_textStr stringByReplacingCharactersInRange:NSMakeRange(0, 2) withString:@"aa"];
-    XCTAssert([newStr isEqualToString:@"aa23456789"]);
-
-    newStr = [_textStr stringByReplacingCharactersInRange:NSMakeRange(0, 20) withString:@"aa"];
-    XCTAssert([newStr isEqualToString:@""]);
-}
+//- (void)testStringByReplacingCharactersInRangeWithString {
+//    NSString *newStr;
+//    newStr = [_textStr stringByReplacingCharactersInRange:NSMakeRange(0, 2) withString:@"aa"];
+//    XCTAssert([newStr isEqualToString:@"aa23456789"]);
+//
+//    newStr = [_textStr stringByReplacingCharactersInRange:NSMakeRange(0, 20) withString:@"aa"];
+//    XCTAssert([newStr isEqualToString:@""]);
+//}
 @end

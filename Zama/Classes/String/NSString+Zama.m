@@ -26,7 +26,8 @@
         // Replace Occurences
         zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingOccurrencesOfString:withString:), @selector(zm_stringByReplacingOccurrencesOfString:withString:));
         zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingOccurrencesOfString:withString:options:range:), @selector(zm_stringByReplacingOccurrencesOfString:withString:options:range:));
-        zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingCharactersInRange:withString:), @selector(zm_stringByReplacingCharactersInRange:withString:));
+        
+//        zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingCharactersInRange:withString:), @selector(zm_stringByReplacingCharactersInRange:withString:));
     });
 }
 
@@ -35,7 +36,7 @@
     @try {
         character = [self zm_characterAtIndex:index];
     } @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
     } @finally {
         return character;
     }
@@ -47,7 +48,7 @@
         subString = [self zm_substringFromIndex:from];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         subString = @"";
     }
     @finally {
@@ -61,7 +62,7 @@
         subString = [self zm_substringToIndex:to];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         subString = @"";
     }
     @finally {
@@ -75,7 +76,7 @@
         subString = [self zm_substringWithRange:range];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         subString = @"";
     }
     @finally {
@@ -90,7 +91,7 @@
         newStr = [self zm_stringByReplacingOccurrencesOfString:target withString:replacement];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         newStr = @"";
     }
     @finally {
@@ -104,7 +105,7 @@
         newStr = [self zm_stringByReplacingOccurrencesOfString:target withString:replacement options:options range:searchRange];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         newStr = @"";
     }
     @finally {
@@ -118,7 +119,7 @@
         newStr = [self zm_stringByReplacingCharactersInRange:range withString:replacement];
     }
     @catch (NSException *exception) {
-        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeNSString];
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
         newStr = @"";
     }
     @finally {

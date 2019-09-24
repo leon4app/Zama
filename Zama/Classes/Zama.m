@@ -17,6 +17,7 @@
 #import "NSMutableArray+Zama.h"
 
 #import "NSString+Zama.h"
+#import "NSMutableString+Zama.h"
 @interface Zama ()
 
 @end
@@ -46,8 +47,8 @@
     if (ability & ZMProtectTypeTimer) {
         [self registerTimer];
     }
-    if (ability & ZMProtectTypeNSString) {
-        [self registerNSString];
+    if (ability & ZMProtectTypeString) {
+        [self registerString];
     }
 }
 
@@ -98,10 +99,11 @@
     });
 }
 
-+ (void)registerNSString {
++ (void)registerString {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [NSString zmStartProtect];
+        [NSMutableString zmStartProtect];
     });
 }
 
