@@ -6,15 +6,18 @@
 //  Copyright (c) 2019 Zama. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "Zama.h"
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
 #import "ZamaProtectProtocol.h"
 
 #import "NSNull+Zama.h"
+
 #import "NSArray+Zama.h"
 #import "NSMutableArray+Zama.h"
+
+#import "NSString+Zama.h"
+#import "NSMutableString+Zama.h"
 @interface Zama ()
 
 @end
@@ -43,6 +46,9 @@
     }
     if (ability & ZMProtectTypeTimer) {
         [self registerTimer];
+    }
+    if (ability & ZMProtectTypeString) {
+        [self registerString];
     }
 }
 
@@ -90,6 +96,14 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         zamazenta_hook_load_group(XXForOCString(ProtectTimer));
+    });
+}
+
++ (void)registerString {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [NSString zmStartProtect];
+        [NSMutableString zmStartProtect];
     });
 }
 

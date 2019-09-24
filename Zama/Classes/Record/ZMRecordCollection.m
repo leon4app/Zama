@@ -42,6 +42,17 @@ __weak static id<ZMExceptionRecordHandlerProtocol> __record;
     __record = record;
 }
 
++ (void)recordFatalWithException:(NSException *)exception errorType:(ZMProtectType)type {
+    ZMExceptionRecord *record = [ZMExceptionRecord new];
+    record.type = type;
+    record.reason = exception.reason.length ? exception.reason : @"未知原因";
+    record.callStackSymbols = exception.callStackSymbols;
+    record.callStackReturnAddresses = exception.callStackReturnAddresses;
+    if ([__record respondsToSelector:@selector(recordException:)]) {
+        [__record recordException:record];
+    }
+}
+
 + (void)recordFatalWithReason:(nullable NSString *)reason
                     errorType:(ZMProtectType)type {
     ZMExceptionRecord *record = [ZMExceptionRecord new];

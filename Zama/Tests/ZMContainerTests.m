@@ -109,7 +109,7 @@
     // setObject:atIndexedSubscript
     mutableArray[1] = @"aa";
     XCTAssert(mutableArray.count == 2);
-    mutableArray[1] = nil;
+    mutableArray[1] = _nilStr;
     mutableArray[2] = @"aa";
     XCTAssert(mutableArray.count == 3);
     mutableArray[4] = @"aa";

@@ -8,12 +8,21 @@
 
 #import <Zama/Zama.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface ZMRecordCollection : NSObject
 
 /**
  注册异常日志处理者
  */
 + (void)registerRecordHandler:(nullable id<ZMExceptionRecordHandlerProtocol>)record;
+
+/**
+汇报Crash
+
+@param exception 捕获到的异常
+*/
++ (void)recordFatalWithException:(NSException *)exception errorType:(ZMProtectType)type;
 
 /**
  汇报Crash
@@ -24,3 +33,5 @@
                     errorType:(ZMProtectType)type;
 
 @end
+
+NS_ASSUME_NONNULL_END
