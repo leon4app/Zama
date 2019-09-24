@@ -16,6 +16,7 @@
 #import "NSArray+Zama.h"
 #import "NSMutableArray+Zama.h"
 #import "NSDictionary+Zama.h"
+#import "NSMutableDictionary+Zama.h"
 #import "NSCache+Zama.h"
 
 #import "NSString+Zama.h"
@@ -69,6 +70,7 @@
         [NSArray zmStartProtect];
         [NSMutableArray zmStartProtect];
         [NSDictionary zmStartProtect];
+        [NSMutableDictionary zmStartProtect];
         [NSCache zmStartProtect];
     });
 }

@@ -116,27 +116,4 @@
     XCTAssert(mutableArray.count == 3);
 }
 
-- (void)testNSMutableDictionary {
-    NSMutableDictionary *dict;
-    dict = [NSMutableDictionary dictionary];
-
-    (void)dict[_nilStr];
-
-    [dict objectForKey:_nilStr];
-
-    dict[_nilStr] = @"aaa";
-
-    dict[@"aaa"] = _nilStr;
-
-    [dict setValue:_nilStr forKey:@"aaa"];
-
-    [dict setValue:@"aaa" forKey:_nilStr];
-
-    [dict setObject:_nilStr forKey:@"aaa"];
-
-    [dict setObject:@"aaa" forKey:_nilStr];
-
-    [dict removeObjectForKey:_nilStr];
-}
-
 @end
