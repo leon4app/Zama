@@ -44,9 +44,6 @@
     if (ability & ZMProtectTypeKVO) {
         [self registerKVO];
     }
-    if (ability & ZMProtectTypeNotification) {
-        [self registerNotification];
-    }
     if (ability & ZMProtectTypeTimer) {
         [self registerTimer];
     }
@@ -66,7 +63,6 @@
 + (void)registerContainer {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        zamazenta_hook_load_group(XXForOCString(ProtectCont));
         [NSArray zmStartProtect];
         [NSMutableArray zmStartProtect];
         [NSDictionary zmStartProtect];
@@ -78,31 +74,20 @@
 + (void)registerUnrecognizedSelector {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        zamazenta_hook_load_group(XXForOCString(ProtectFW));
     });
 }
 
 + (void)registerKVO {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        zamazenta_hook_load_group(XXForOCString(ProtectKVO));
-    });
-}
 
-+ (void)registerNotification {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        BOOL ABOVE_IOS8  = (([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) ? YES : NO);
-        if (!ABOVE_IOS8) {
-            zamazenta_hook_load_group(XXForOCString(ProtectNoti));
-        }
     });
 }
 
 + (void)registerTimer {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        zamazenta_hook_load_group(XXForOCString(ProtectTimer));
+
     });
 }
 

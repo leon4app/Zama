@@ -8,8 +8,6 @@
 
 #include "ZMSwizzling.h"
 #import <objc/runtime.h>
-#import <mach-o/getsect.h>
-#import <mach-o/dyld.h>
 
 BOOL defaultSwizzlingOCMethod(Class self, SEL origSel_, SEL altSel_) {
     Method origMethod = class_getInstanceMethod(self, origSel_);
@@ -108,34 +106,5 @@ void zamazenta_exchange_instance_method(Class anClass, SEL orginalMethodSel, SEL
 
     else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-#ifndef __LP64__
-
-#define mach_header_ mach_header
-
-#else
-
-#define mach_header_ mach_header_64
-
-#endif
-
-void zamazenta_hook_load_group(NSString *groupName) {
-    uint32_t count = _dyld_image_count();
-    for (uint32_t i = 0 ; i < count ; i ++) {
-        const struct mach_header_* header = (void*)_dyld_get_image_header(i);
-        NSString *string = [NSString stringWithFormat:@"__sh%@",groupName];
-        unsigned long size = 0;
-        uint8_t *data = getsectiondata(header, "__DATA", [string UTF8String],&size);
-        if (data && size > 0) {
-            void **pointers = (void**)data;
-            uint32_t count = (uint32_t)(size / sizeof(void*));
-            for (uint32_t i = 0 ; i < count ; i ++) {
-                void(*pointer)(void) = pointers[i];
-                pointer();
-            }
-            break;
-        }
     }
 }
