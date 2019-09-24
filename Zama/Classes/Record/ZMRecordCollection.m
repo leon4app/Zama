@@ -36,7 +36,7 @@
 
 @implementation ZMRecordCollection
 
-static id<ZMExceptionRecordHandlerProtocol> __record;
+__weak static id<ZMExceptionRecordHandlerProtocol> __record;
 
 + (void)registerRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)record {
     __record = record;
