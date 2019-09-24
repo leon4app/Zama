@@ -6,107 +6,156 @@
 //  Copyright (c) 2019 Zama. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
 
-#define NSArrayObjectAtIndex if (self.count == 0) {\
-\
-    NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds for empty NSArray",\
-                        [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];\
-    [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];\
-    return nil;\
-}\
-\
-if (index >= self.count) {\
-    NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds for array(count: %@)",\
-                        [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];\
-    [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];\
-    return nil;\
-}\
-\
-return XXHookOrgin(index);
+/*
+ 不同的创建数组的方法导致不同的类簇:
 
+ NSArray *arr1 = @[@"1",@"2"]; // _NSArrayI
 
-#define NSArrayWithObjects NSInteger newObjsIndex = 0;\
-id  _Nonnull __unsafe_unretained newObjects[cnt];\
-for (int i = 0; i < cnt; i++) {\
-\
-    id objc = objects[i];\
-    if (objc == nil) {\
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: attempt to insert nil object from objects[%d]",\
-                            [self class], NSStringFromSelector(@selector(arrayWithObjects:count:)), i];\
-\
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];\
-        continue;\
-    }\
-    newObjects[newObjsIndex++] = objc;\
-\
-}\
-return XXHookOrgin(newObjects, newObjsIndex);
+ NSArray *arr1 = @[@"1"]; // __NSSingleObjectArrayI
 
-/**
- hook @selector(objectAtIndex:)
-
- @param 
- @param NSArray
- @param ProtectCont
- @param id
- @param objectAtIndex:
- @return safe
- */
-
-XXStaticHookClass(NSArray, ProtectCont, id, @selector(objectAtIndex:), (NSUInteger)index) {
-    NSArrayObjectAtIndex
-}
-XXStaticHookEnd
-
-XXStaticHookPrivateClass(__NSSingleObjectArrayI, NSArray *, ProtectCont, id, @selector(objectAtIndex:), (NSUInteger)index) {
-    NSArrayObjectAtIndex
-}
-XXStaticHookEnd
-
-XXStaticHookPrivateClass(__NSArrayI, NSArray *, ProtectCont, id, @selector(objectAtIndexedSubscript:), (NSUInteger)index) {
-    NSArrayObjectAtIndex
-}
-XXStaticHookEnd
-
-XXStaticHookPrivateClass(__NSArray0, NSArray *, ProtectCont, id, @selector(objectAtIndex:), (NSUInteger)index) {
-    NSArrayObjectAtIndex
-}
-XXStaticHookEnd
-
-/**
- hook @selector(arrayWithObjects:count:),
+ NSArray *arr2 = [[NSArray alloc] init]; // _NSArray0
+ arr2 = [NSArray array];                 // _NSArray0
  
- @param
- @param NSArray
- @param ProtectCont
- @param id
- @param objectAtIndex:
- @return safe
+ NSArray *arr3 = [NSArray alloc]; // _NSPlaceHolderArray
+
  */
 
-XXStaticHookPrivateMetaClass(__NSSingleObjectArrayI, NSArray *, ProtectCont, NSArray *,
-                             @selector(arrayWithObjects:count:), (const id *)objects, (NSUInteger)cnt) {
-    NSArrayWithObjects
-}
-XXStaticHookEnd
+@implementation NSArray (Zama)
 
-XXStaticHookPrivateMetaClass(__NSArrayI, NSArray *, ProtectCont, NSArray *, @selector(arrayWithObjects:count:),
-                             (const id *)objects, (NSUInteger)cnt) {
-    NSArrayWithObjects
-}
-XXStaticHookEnd
++ (void)zmStartProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        //=================
+        //   class method
+        //=================
 
-XXStaticHookPrivateMetaClass(__NSArray0, NSArray *, ProtectCont, NSArray *, @selector(arrayWithObjects:count:),
-                             (const id *)objects, (NSUInteger)cnt) {
-    NSArrayWithObjects
-}
-XXStaticHookEnd
+        //instance array method exchange
+        zamazenta_exchange_class_method([self class], @selector(arrayWithObjects:count:), @selector(zm_arrayWithObjects:count:));
 
-XXStaticHookPrivateClass(__NSPlaceholderArray, NSArray *, ProtectCont, NSArray *, @selector(initWithObjects:count:),
-                             (const id *)objects, (NSUInteger)cnt) {
-    NSArrayWithObjects
+        //====================
+        //   instance method
+        //====================
+
+        Class __NSArray = NSClassFromString(@"NSArray");
+        Class __NSArrayI = NSClassFromString(@"__NSArrayI");
+        Class __NSSingleObjectArrayI = NSClassFromString(@"__NSSingleObjectArrayI");
+        Class __NSArray0 = NSClassFromString(@"__NSArray0");
+
+        //objectAtIndex:
+        zamazenta_exchange_instance_method(__NSArrayI, @selector(objectAtIndex:), @selector(zm_NSArrayI_objectAtIndex:));
+        zamazenta_exchange_instance_method(__NSSingleObjectArrayI, @selector(objectAtIndex:), @selector(zm_NSSingleObjectArrayI_objectAtIndex:));
+        zamazenta_exchange_instance_method(__NSArray0, @selector(objectAtIndex:), @selector(zm_NSArray0_objectAtIndex:));
+
+        //objectAtIndexedSubscript:
+        zamazenta_exchange_instance_method(__NSArrayI, @selector(objectAtIndexedSubscript:), @selector(zm_NSArrayI_objectAtIndexedSubscript:));
+
+        //objectsAtIndexes:
+        zamazenta_exchange_instance_method(__NSArray, @selector(objectsAtIndexes:), @selector(zm_objectsAtIndexes:));
+    });
 }
-XXStaticHookEnd
+
+#pragma mark - hook @selector(arrayWithObjects:)
++ (instancetype)zm_arrayWithObjects:(const id _Nonnull __unsafe_unretained *)objects count:(NSUInteger)cnt {
+    NSInteger newObjsIndex = 0;
+    id _Nonnull __unsafe_unretained newObjects[cnt];
+    for (int i = 0; i < cnt; i++) {
+        id objc = objects[i];
+        if (objc == nil) {
+            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: attempt to insert nil object from objects[%d]", [self class], NSStringFromSelector(@selector(arrayWithObjects:count:)), i];
+            [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+            continue;
+        }
+        newObjects[newObjsIndex++] = objc;
+
+    }
+    return [self zm_arrayWithObjects:newObjects count:newObjsIndex];
+}
+
+#pragma mark - hook @selector(objectAtIndex:)
+- (id)zm_NSArray0_objectAtIndex:(NSUInteger)index {
+    if (self.count == 0) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    if (index >= self.count) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    return [self zm_NSArray0_objectAtIndex:index];
+}
+
+- (id)zm_NSSingleObjectArrayI_objectAtIndex:(NSUInteger)index {
+    if (self.count == 0) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    if (index >= self.count) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    return [self zm_NSSingleObjectArrayI_objectAtIndex:index];
+}
+
+- (id)zm_NSArrayI_objectAtIndex:(NSUInteger)index {
+    if (self.count == 0) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    if (index >= self.count) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    return [self zm_NSArrayI_objectAtIndex:index];
+}
+
+#pragma mark - hook @selector(objectAtIndexedSubscript:)
+- (id)zm_NSArrayI_objectAtIndexedSubscript:(NSUInteger)index {
+    if (self.count == 0) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)), @(index)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    if (index >= self.count) {
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)), @(index), @(self.count)];
+        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+        return nil;
+    }
+
+    return [self zm_NSArrayI_objectAtIndexedSubscript:index];
+}
+
+#pragma mark - hook @selector(objectsAtIndexes:)
+- (NSArray *)zm_objectsAtIndexes:(NSIndexSet *)indexes {
+    NSUInteger index = indexes.firstIndex;
+    while (index != NSNotFound) {
+        if (index >= self.count) {
+            NSString *reason;
+            if (self.count == 0) {
+                reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectsAtIndexes:)), @(index)];
+            } else {
+                reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ in index set beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectsAtIndexes:)), @(index), @(self.count)];
+            }
+            [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+            return @[];
+        }
+        index = [indexes indexGreaterThanIndex:index];
+    }
+    return [self zm_objectsAtIndexes:indexes];
+}
+@end
