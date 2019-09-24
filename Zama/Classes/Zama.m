@@ -48,7 +48,8 @@
         [self registerTimer];
     }
     if (ability & ZMProtectTypeString) {
-        [self registerString];
+        // 保护方式存疑,暂不开启
+//        [self registerString];
     }
 }
 
