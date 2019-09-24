@@ -13,11 +13,9 @@ XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, vo
     if (anObject && aKey) {
         XXHookOrgin(anObject,aKey);
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:)),aKey, anObject];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@", [self class], NSStringFromSelector(@selector(setObject:forKey:)),aKey, anObject];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
     }
-    
 }
 XXStaticHookEnd
 
@@ -25,8 +23,7 @@ XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, vo
     if (aKey) {
         XXHookOrgin(anObject,aKey);
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil",
-                            [self class], NSStringFromSelector(@selector(setObject:forKeyedSubscript:)),aKey, anObject];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil", [self class], NSStringFromSelector(@selector(setObject:forKeyedSubscript:))];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
     }
 }
@@ -36,10 +33,8 @@ XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, vo
     if (aKey) {
         XXHookOrgin(aKey);
     } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:))];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil", [self class], NSStringFromSelector(@selector(setObject:forKey:))];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
     }
-    
 }
 XXStaticHookEnd

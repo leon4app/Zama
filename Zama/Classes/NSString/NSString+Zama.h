@@ -1,0 +1,31 @@
+//
+//  NSString+Zama.h
+//  Zama
+//
+//  Created by Leon on 2019/9/24.
+//
+
+#import <Foundation/Foundation.h>
+#import "ZamaProtectProtocol.h"
+
+NS_ASSUME_NONNULL_BEGIN
+/**
+*  Can avoid crash method
+*
+*  1. - (unichar)characterAtIndex:(NSUInteger)index
+*  2. - (NSString *)substringFromIndex:(NSUInteger)from
+*  3. - (NSString *)substringToIndex:(NSUInteger)to {
+*  4. - (NSString *)substringWithRange:(NSRange)range {
+*  5. - (NSString *)stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement
+*  6. - (NSString *)stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)options range:(NSRange)searchRange
+*  7. - (NSString *)stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)replacement
+*
+ @note 对于返回 NSString 对象的方法,当发生异常时的默认值, 这里返回的是一个零长串(@""), 原因是 Foundation 把此方法标注为 Nonnull, 如果返回 nil, 那么担心 Swift 出现崩溃, 尚未验证
+ @note 关于是否要把越界情况转换为截取到安全边界, 我认为不宜如此操作, Zama 应该只做保守操作, 不过未来也许可以做成可配置项目
+ //TODO: 实现默认操作可配置
+*/
+@interface NSString (Zama)<ZamaProtectProtocol>
+
+@end
+
+NS_ASSUME_NONNULL_END
