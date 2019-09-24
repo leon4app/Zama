@@ -8,6 +8,7 @@
 
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
+
 @implementation NSCache (Zama)
 
 + (void)zmStartProtect {

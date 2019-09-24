@@ -15,6 +15,7 @@
 
 #import "NSArray+Zama.h"
 #import "NSMutableArray+Zama.h"
+#import "NSDictionary+Zama.h"
 #import "NSCache+Zama.h"
 
 #import "NSString+Zama.h"
@@ -67,6 +68,7 @@
         zamazenta_hook_load_group(XXForOCString(ProtectCont));
         [NSArray zmStartProtect];
         [NSMutableArray zmStartProtect];
+        [NSDictionary zmStartProtect];
         [NSCache zmStartProtect];
     });
 }
