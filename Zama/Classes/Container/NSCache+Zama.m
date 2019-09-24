@@ -8,26 +8,29 @@
 
 #import "ZMSwizzling.h"
 #import "ZMRecordCollection.h"
+@implementation NSCache (Zama)
 
-XXStaticHookClass(NSCache, ProtectCont, void, @selector(setObject:forKey:), (id)obj, (id)key) {
-    if (obj && key) {
-        XXHookOrgin(obj,key);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:)),key, obj];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
++ (void)zmStartProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        zamazenta_exchange_instance_method([self class], @selector(setObject:forKey:), @selector(zm_setObject:forKey:));
+        zamazenta_exchange_instance_method([self class], @selector(setObject:forKey:cost:), @selector(zm_setObject:forKey:cost:));
+    });
+}
+
+- (void)zm_setObject:(id)obj forKey:(id)key {
+    @try {
+        [self zm_setObject:obj forKey:key];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
     }
 }
-XXStaticHookEnd
 
-XXStaticHookClass(NSCache, ProtectCont, void, @selector(setObject:forKey:cost:), (id)obj, (id)key, (NSUInteger)g) {
-    if (obj && key) {
-        XXHookOrgin(obj,key,g);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:cost:)), key, obj];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
+- (void)zm_setObject:(id)obj forKey:(id)key cost:(NSUInteger)cost {
+    @try {
+        [self zm_setObject:obj forKey:key cost:cost];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
     }
 }
-XXStaticHookEnd
-
+@end
