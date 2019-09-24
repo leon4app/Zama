@@ -6,12 +6,19 @@
 //  Copyright (c) 2019 Zama. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "ZMRecordCollection.h"
 #import "ZMSwizzling.h"
 
-XXStaticHookMetaClass(NSDictionary, ProtectCont, NSDictionary *, @selector(dictionaryWithObjects:forKeys:count:),
-                      (const id *) objects, (const id<NSCopying> *) keys, (NSUInteger)cnt) {
+@implementation NSDictionary (Zama)
+
++ (void)zmStartProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        zamazenta_exchange_class_method(self , @selector(dictionaryWithObjects:forKeys:count:), @selector(zm_dictionaryWithObjects:forKeys:count:));
+    });
+}
+
++ (instancetype)zm_dictionaryWithObjects:(id  _Nonnull const [])objects forKeys:(id<NSCopying>  _Nonnull const [])keys count:(NSUInteger)cnt {
     NSUInteger index = 0;
     id  _Nonnull __unsafe_unretained newObjects[cnt];
     id  _Nonnull __unsafe_unretained newkeys[cnt];
@@ -28,8 +35,8 @@ XXStaticHookMetaClass(NSDictionary, ProtectCont, NSDictionary *, @selector(dicti
         newkeys[index] = keys[i];
         index++;
     }
-    
-    return XXHookOrgin(newObjects, newkeys,index);
-}
-XXStaticHookEnd
 
+    return [self zm_dictionaryWithObjects:newObjects forKeys:newkeys count:index];
+}
+
+@end
