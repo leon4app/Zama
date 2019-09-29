@@ -32,7 +32,7 @@
 }
 
 - (unichar)zm_characterAtIndex:(NSUInteger)index {
-    unichar character;
+    unichar character = 0;
     @try {
         character = [self zm_characterAtIndex:index];
     } @catch (NSException *exception) {
