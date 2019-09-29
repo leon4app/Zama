@@ -33,8 +33,8 @@
     NSString *subStr;
     subStr = [_textStr substringFromIndex:1];
     XCTAssert([subStr isEqualToString:@"123456789"]);
-    subStr = [_textStr substringFromIndex:88];
-    XCTAssert([subStr isEqualToString:@""]);
+    subStr = [_textStr substringFromIndex:88];                                                      
+    XCTAssertNil(subStr);
 }
 
 - (void)testSubstringToIndex {
@@ -43,7 +43,7 @@
     XCTAssert([subStr isEqualToString:@"0"]);
 
     subStr = [_textStr substringToIndex:88];
-    XCTAssert([subStr isEqualToString:@""]);
+    XCTAssertNil(subStr);
 }
 
 - (void)testSubstringWithRange {
@@ -51,15 +51,15 @@
     subStr = [_textStr substringWithRange:NSMakeRange(0, 2)];
     XCTAssert([subStr isEqualToString:@"01"]);
     subStr = [_textStr substringWithRange:NSMakeRange(10, 2)];
-    XCTAssert([subStr isEqualToString:@""]);
+    XCTAssertNil(subStr);
     subStr = [_textStr substringWithRange:NSMakeRange(0, 12)];
-    XCTAssert([subStr isEqualToString:@""]);
+    XCTAssertNil(subStr);
 }
 
 - (void)testStringByReplacingOccurrencesOfStringWithString {
     NSString *newStr;
     newStr = [_textStr stringByReplacingOccurrencesOfString:_nilStr withString:@"aa"];
-    XCTAssert([newStr isEqualToString:@""]);
+    XCTAssertNil(newStr);
     newStr = [_textStr stringByReplacingOccurrencesOfString:@"012" withString:@"aa"];
     XCTAssert([newStr isEqualToString:@"aa3456789"]);
 }
@@ -67,10 +67,10 @@
 - (void)testStringByReplacingOccurrencesOfStringWithStringOptionsRange {
     NSString *newStr;
     newStr = [_textStr stringByReplacingOccurrencesOfString:_nilStr withString:@"aa" options:NSCaseInsensitiveSearch range:NSMakeRange(0, 20)];
-    XCTAssert([newStr isEqualToString:@""]);
+    XCTAssertNil(newStr);
 
     newStr = [_textStr stringByReplacingOccurrencesOfString:@"0" withString:@"aa" options:NSCaseInsensitiveSearch range:NSMakeRange(0, 20)];
-    XCTAssert([newStr isEqualToString:@""]);
+    XCTAssertNil(newStr);
 
     newStr = [_textStr stringByReplacingOccurrencesOfString:@"0" withString:@"aa" options:NSCaseInsensitiveSearch range:NSMakeRange(0, 10)];
     XCTAssert([newStr isEqualToString:@"aa123456789"]);
