@@ -20,13 +20,13 @@
 }
 
 - (void)testCharacterAtIndex {
-    unichar ch;
+    unichar ch = 0;
     ch = [_textStr characterAtIndex:20];
-    XCTAssertEqual(ch, 0x000);
+    XCTAssertEqual(ch, 0);
     ch = [_textStr characterAtIndex:0];
-    XCTAssertEqual(ch, 0x0030);
+    XCTAssertEqual(ch, '0');
     ch = [_textStr characterAtIndex:20];
-    XCTAssertEqual(ch, 0x0030);
+    XCTAssertEqual(ch, 0);
 }
 
 - (void)testSubstringFromIndex {
