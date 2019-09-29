@@ -26,7 +26,7 @@
     ch = [_textStr characterAtIndex:0];
     XCTAssertEqual(ch, '0');
     ch = [_textStr characterAtIndex:20];
-    XCTAssertEqual(ch, '0');
+    XCTAssertEqual(ch, 0);
 }
 
 - (void)testSubstringFromIndex {
