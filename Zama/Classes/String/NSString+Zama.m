@@ -26,7 +26,7 @@
         // Replace Occurences
         zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingOccurrencesOfString:withString:), @selector(zm_stringByReplacingOccurrencesOfString:withString:));
         zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingOccurrencesOfString:withString:options:range:), @selector(zm_stringByReplacingOccurrencesOfString:withString:options:range:));
-        
+// 对于这个方法, 其内部实现是 生成了 NSMutableString 并调用 replaceCharactersInRange:withString 方法, 在开起了 NSMutableString 保护之后, 这边的保护就会失效, 返回的是原字符串, 这与其它的保护操作不符, 故暂时不做保护
 //        zamazenta_exchange_instance_method(stringClass, @selector(stringByReplacingCharactersInRange:withString:), @selector(zm_stringByReplacingCharactersInRange:withString:));
     });
 }
@@ -49,7 +49,6 @@
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        subString = @"";
     }
     @finally {
         return subString;
@@ -63,7 +62,6 @@
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        subString = @"";
     }
     @finally {
         return subString;
@@ -77,7 +75,6 @@
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        subString = @"";
     }
     @finally {
         return subString;
@@ -86,13 +83,12 @@
 
 #pragma mark - Replace Occurrences
 - (NSString *)zm_stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement {
-    NSString *newStr = nil;
+    NSString *newStr;
     @try {
         newStr = [self zm_stringByReplacingOccurrencesOfString:target withString:replacement];
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        newStr = @"";
     }
     @finally {
         return newStr;
@@ -100,13 +96,12 @@
 }
 
 - (NSString *)zm_stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)options range:(NSRange)searchRange {
-    NSString *newStr = nil;
+    NSString *newStr;
     @try {
         newStr = [self zm_stringByReplacingOccurrencesOfString:target withString:replacement options:options range:searchRange];
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        newStr = @"";
     }
     @finally {
         return newStr;
@@ -114,13 +109,12 @@
 }
 
 - (NSString *)zm_stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)replacement {
-    NSString *newStr = nil;
+    NSString *newStr;
     @try {
         newStr = [self zm_stringByReplacingCharactersInRange:range withString:replacement];
     }
     @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeString];
-        newStr = @"";
     }
     @finally {
         return newStr;
