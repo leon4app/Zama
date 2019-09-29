@@ -15,12 +15,11 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
     ZMProtectTypeContainer = 1 << 2,
     ZMProtectTypeNSNull = 1 << 3,
     ZMProtectTypeKVO = 1 << 4,
-    ZMProtectTypeNotification = 1 << 5,
     ZMProtectTypeTimer = 1 << 6,
     ZMProtectTypeDanglingPointer = 1 << 7,
+    ZMProtectTypeString = 1 << 8,
     ZMProtectTypeExceptDanglingPointer = (ZMProtectTypeUnrecognizedSelector | ZMProtectTypeContainer |
-                                          ZMProtectTypeNSNull| ZMProtectTypeKVO |
-                                          ZMProtectTypeNotification | ZMProtectTypeTimer)
+                                          ZMProtectTypeNSNull| ZMProtectTypeKVO | ZMProtectTypeTimer | ZMProtectTypeString)
 };
 
 @interface ZMExceptionRecord : NSObject

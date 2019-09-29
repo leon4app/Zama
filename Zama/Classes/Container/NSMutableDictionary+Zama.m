@@ -9,37 +9,40 @@
 #import "ZMRecordCollection.h"
 #import "ZMSwizzling.h"
 
-XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, void, @selector(setObject:forKey:), (id)anObject, (id<NSCopying>)aKey ) {
-    if (anObject && aKey) {
-        XXHookOrgin(anObject,aKey);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key or value appear nil- key is %@, obj is %@",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:)),aKey, anObject];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-    }
-    
-}
-XXStaticHookEnd
+@implementation NSMutableDictionary (Zama)
 
-XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, void, @selector(setObject:forKeyedSubscript:), (id)anObject, (id<NSCopying>)aKey ) {
-    if (aKey) {
-        XXHookOrgin(anObject,aKey);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil",
-                            [self class], NSStringFromSelector(@selector(setObject:forKeyedSubscript:)),aKey, anObject];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-    }
-}
-XXStaticHookEnd
++ (void)zmStartProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class dictionaryClass = NSClassFromString(@"__NSDictionaryM");
+        zamazenta_exchange_instance_method(dictionaryClass, @selector(setObject:forKey:), @selector(zm_setObject:forKey:));
+        zamazenta_exchange_instance_method(dictionaryClass, @selector(setObject:forKeyedSubscript:), @selector(zm_setObject:forKeyedSubscript:));
 
-XXStaticHookPrivateClass(__NSDictionaryM, NSMutableDictionary *, ProtectCont, void, @selector(removeObjectForKey:), (id<NSCopying>)aKey ) {
-    if (aKey) {
-        XXHookOrgin(aKey);
-    } else {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: key cannot be nil",
-                            [self class], NSStringFromSelector(@selector(setObject:forKey:))];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-    }
-    
+        zamazenta_exchange_instance_method(dictionaryClass, @selector(removeObjectForKey:), @selector(zm_removeObjectForKey:));
+    });
 }
-XXStaticHookEnd
+
+- (void)zm_setObject:(id)anObject forKey:(id<NSCopying>)aKey {
+    @try {
+        [self zm_setObject:anObject forKey:aKey];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
+    }
+}
+
+- (void)zm_setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key {
+    @try {
+        [self zm_setObject:obj forKeyedSubscript:key];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
+    }
+}
+
+- (void)zm_removeObjectForKey:(id)aKey {
+    @try {
+        [self zm_removeObjectForKey:aKey];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
+    }
+}
+@end
