@@ -21,6 +21,8 @@
 
 #import "NSString+Zama.h"
 #import "NSMutableString+Zama.h"
+
+#import "NSObject+Zama.h"
 @interface Zama ()
 
 @end
@@ -33,34 +35,36 @@
 
 + (void)registerStabilityWithAbility:(ZMProtectType)ability {
     if (ability & ZMProtectTypeUnrecognizedSelector) {
-        [self registerUnrecognizedSelector];
+        [self protectUnrecognizedSelector];
     }
     if (ability & ZMProtectTypeContainer) {
-        [self registerContainer];
+        [self protectContainer];
     }
     if (ability & ZMProtectTypeNSNull) {
-        [self registerNSNull];
+        [self protectNSNull];
     }
     if (ability & ZMProtectTypeKVO) {
-        [self registerKVO];
+        [self protectKVO];
+    }
+    if (ability & ZMProtectTypeKVC) {
+        [self protectKVC];
     }
     if (ability & ZMProtectTypeTimer) {
-        [self registerTimer];
+        [self protectTimer];
     }
     if (ability & ZMProtectTypeString) {
-        // 保护方式存疑,暂不开启
-        [self registerString];
+        [self protectString];
     }
 }
 
-+ (void)registerNSNull {
++ (void)protectNSNull {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [NSNull zmStartProtect];
     });
 }
 
-+ (void)registerContainer {
++ (void)protectContainer {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [NSArray zmStartProtect];
@@ -71,27 +75,34 @@
     });
 }
 
-+ (void)registerUnrecognizedSelector {
++ (void)protectUnrecognizedSelector {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
     });
 }
 
-+ (void)registerKVO {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-    });
-}
-
-+ (void)registerTimer {
++ (void)protectKVO {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
     });
 }
 
-+ (void)registerString {
++ (void)protectKVC {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [NSObject zmStartProtectKVC];
+    });
+}
+
++ (void)protectTimer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+    });
+}
+
++ (void)protectString {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [NSString zmStartProtect];
