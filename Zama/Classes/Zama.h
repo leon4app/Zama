@@ -23,10 +23,11 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
 };
 
 @interface ZMExceptionRecord : NSObject
-/// 异常类型
-@property (readonly) ZMProtectType type;
-/// 异常原因
-@property (nullable, readonly, copy) NSString *reason;
+
+@property (readonly) ZMProtectType type;///< 异常类型
+@property (readonly, copy) NSExceptionName name;
+@property (nullable, readonly, copy) NSDictionary *userInfo;
+@property (nullable, readonly, copy) NSString *reason;///< 异常原因
 @property (readonly, copy) NSArray<NSNumber *> *callStackReturnAddresses;
 @property (readonly, copy) NSArray<NSString *> *callStackSymbols;
 @end

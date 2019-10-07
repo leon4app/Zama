@@ -11,6 +11,8 @@
 @interface ZMExceptionRecord()
 @property (readwrite) ZMProtectType type;
 @property (nullable, readwrite, copy) NSString *reason;
+@property (readwrite, copy) NSExceptionName name;
+@property (nullable, readwrite, copy) NSDictionary *userInfo;
 @property (readwrite, copy) NSArray<NSNumber *> *callStackReturnAddresses;
 @property (readwrite, copy) NSArray<NSString *> *callStackSymbols;
 @end
@@ -47,6 +49,8 @@ __weak static id<ZMExceptionRecordHandlerProtocol> __record;
     ZMExceptionRecord *record = [ZMExceptionRecord new];
     record.type = type;
     record.reason = exception.reason.length ? exception.reason : @"未知原因";
+    record.name = exception.name;
+    record.userInfo = exception.userInfo;
     record.callStackSymbols = exception.callStackSymbols;
     record.callStackReturnAddresses = exception.callStackReturnAddresses;
     if ([__record respondsToSelector:@selector(recordException:)]) {
@@ -58,6 +62,7 @@ __weak static id<ZMExceptionRecordHandlerProtocol> __record;
                     errorType:(ZMProtectType)type {
     ZMExceptionRecord *record = [ZMExceptionRecord new];
     record.type = type;
+    record.name = @"";
     record.reason = reason.length ? reason : @"未知原因";
     record.callStackSymbols = NSThread.callStackSymbols;
     record.callStackReturnAddresses = NSThread.callStackReturnAddresses;
