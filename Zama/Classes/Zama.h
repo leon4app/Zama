@@ -11,13 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
-    ZMProtectTypeUnrecognizedSelector = 1 << 1,
+    ZMProtectTypeUnrecognizedSelector = 1 << 1,// Future feature
     ZMProtectTypeContainer = 1 << 2,
     ZMProtectTypeNSNull = 1 << 3,
-    ZMProtectTypeKVO = 1 << 4,
+    ZMProtectTypeKVO = 1 << 4,// Future feature
     ZMProtectTypeKVC = 1 << 5,
-    ZMProtectTypeTimer = 1 << 6,
-    ZMProtectTypeDanglingPointer = 1 << 7,
+    ZMProtectTypeTimer = 1 << 6,// Future feature
+    ZMProtectTypeDanglingPointer = 1 << 7,// Future feature
     ZMProtectTypeString = 1 << 8,
     ZMProtectTypeExceptDanglingPointer = NSUIntegerMax ^ ZMProtectTypeDanglingPointer
 };
