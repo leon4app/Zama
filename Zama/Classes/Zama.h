@@ -19,8 +19,7 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
     ZMProtectTypeTimer = 1 << 6,
     ZMProtectTypeDanglingPointer = 1 << 7,
     ZMProtectTypeString = 1 << 8,
-    ZMProtectTypeExceptDanglingPointer = (ZMProtectTypeUnrecognizedSelector | ZMProtectTypeContainer |
-                                          ZMProtectTypeNSNull| ZMProtectTypeKVO | ZMProtectTypeKVC | ZMProtectTypeTimer | ZMProtectTypeString)
+    ZMProtectTypeExceptDanglingPointer = NSUIntegerMax ^ ZMProtectTypeDanglingPointer
 };
 
 @interface ZMExceptionRecord : NSObject
