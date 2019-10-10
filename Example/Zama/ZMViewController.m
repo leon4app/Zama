@@ -8,23 +8,49 @@
 
 #import "ZMViewController.h"
 @import Zama;
-@interface ZMViewController ()
 
+@interface ZMAObservable : NSObject
+@property NSString *name;
+@end
+@implementation ZMAObservable
+@end
+
+@interface ZMAObserver : NSObject
+@end
+@implementation ZMAObserver
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    NSLog(@"%@", object);
+}
+@end
+
+@interface ZMViewController ()
+@property (nonatomic) ZMAObservable *observable;
+@property (nonatomic) ZMAObserver *observer;
 @end
 
 @implementation ZMViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
 - (IBAction)startProtect:(id)sender {
     [Zama startProtect];
 }
 
 - (IBAction)onButtonTouch:(id)sender {
-    [self testContainerProtect];
+//    [self testContainerProtect];
+    [self testKVOProtect];
+}
+
+- (void)testKVOProtect {
+    self.observable = [ZMAObservable new];
+    self.observer = [ZMAObserver new];
+    
+    // 观察者被释放
+    [self.observable addObserver:self.observer forKeyPath:@"name" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    self.observer = nil;
+    self.observable.name = @"Nick";
+
+    // 多次移除观察者
+    // 'NSRangeException', reason: 'Cannot remove an observer <ZMViewController 0x7fdc8a803dd0> for the key path "name" from <ZMAObject 0x6000022bcb40> because it is not registered as an observer.'
+//    [self.observable removeObserver:self.observer forKeyPath:@"name"];
 }
 
 - (void)testContainerProtect {
