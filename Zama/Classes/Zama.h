@@ -14,7 +14,7 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
     ZMProtectTypeUnrecognizedSelector = 1 << 1,// Future feature
     ZMProtectTypeContainer = 1 << 2,
     ZMProtectTypeNSNull = 1 << 3,
-    ZMProtectTypeKVO = 1 << 4,// Future feature
+    ZMProtectTypeKVO = 1 << 4,
     ZMProtectTypeKVC = 1 << 5,
     ZMProtectTypeTimer = 1 << 6,// Future feature
     ZMProtectTypeDanglingPointer = 1 << 7,// Future feature
