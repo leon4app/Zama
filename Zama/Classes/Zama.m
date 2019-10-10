@@ -23,6 +23,8 @@
 #import "NSMutableString+Zama.h"
 
 #import "NSObject+Zama.h"
+
+#import "NSObject+ZamaKVO.h"
 @interface Zama ()
 
 @end
@@ -84,7 +86,7 @@
 + (void)protectKVO {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-
+        [NSObject zmStartProtectKVO];
     });
 }
 
