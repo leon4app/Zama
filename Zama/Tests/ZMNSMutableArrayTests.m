@@ -10,7 +10,7 @@
 @interface ZMNSMutableArrayTests : XCTestCase {
     NSMutableArray *mutableArray;
 }
-@property(nonatomic, copy) NSString *nilStr;
+@property (nonatomic, copy) NSString *nilStr;
 @end
 
 @implementation ZMNSMutableArrayTests

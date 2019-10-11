@@ -8,9 +8,9 @@
 #import <XCTest/XCTest.h>
 @import Zama;
 @interface ZMNSArrayTests : XCTestCase {
-NSArray *array;
+    NSArray *array;
 }
-@property(nonatomic, copy) NSString *nilStr;
+@property (nonatomic, copy) NSString *nilStr;
 @end
 
 @implementation ZMNSArrayTests

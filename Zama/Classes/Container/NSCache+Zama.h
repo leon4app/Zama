@@ -13,7 +13,7 @@ Can avoid crash method:
 1. setObject:forKey:
 2. setObject:forKey:cost:
  */
-@interface NSCache (Zama)<ZamaProtectProtocol>
+@interface NSCache (Zama) <ZamaProtectProtocol>
 
 @end
 

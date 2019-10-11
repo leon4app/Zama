@@ -8,7 +8,7 @@
 
 #import "ZMRecordCollection.h"
 
-@interface ZMExceptionRecord()
+@interface ZMExceptionRecord ()
 @property (readwrite) ZMProtectType type;
 @property (nullable, readwrite, copy) NSString *reason;
 @property (readwrite, copy) NSExceptionName name;

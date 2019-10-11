@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 *  2. - (void)removeObjectForKey:(id)aKey
 *
 */
-@interface NSMutableDictionary (Zama)<ZamaProtectProtocol>
+@interface NSMutableDictionary (Zama) <ZamaProtectProtocol>
 
 @end
 

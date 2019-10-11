@@ -8,8 +8,8 @@
 #import <XCTest/XCTest.h>
 @import Zama;
 @interface ZMNSStringTests : XCTestCase
-@property(nonatomic, copy) NSString *nilStr;
-@property(nonatomic, copy) NSString *textStr;
+@property (nonatomic, copy) NSString *nilStr;
+@property (nonatomic, copy) NSString *textStr;
 @end
 
 @implementation ZMNSStringTests
@@ -33,7 +33,7 @@
     NSString *subStr;
     subStr = [_textStr substringFromIndex:1];
     XCTAssert([subStr isEqualToString:@"123456789"]);
-    subStr = [_textStr substringFromIndex:88];                                                      
+    subStr = [_textStr substringFromIndex:88];
     XCTAssertNil(subStr);
 }
 

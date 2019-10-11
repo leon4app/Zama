@@ -112,7 +112,7 @@
     });
 }
 
-+ (void)registerRecordHandler:(nonnull id<ZMExceptionRecordHandlerProtocol>)handler { 
++ (void)registerRecordHandler:(nonnull id<ZMExceptionRecordHandlerProtocol>)handler {
     [ZMRecordCollection registerRecordHandler:handler];
 }
 

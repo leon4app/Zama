@@ -22,7 +22,7 @@
 - (id)zm_valueForKey:(NSString *)key {
     id value = nil;
     @try {
-         value = [self zm_valueForKey:key];
+        value = [self zm_valueForKey:key];
     } @catch (NSException *exception) {
         [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeKVC];
     } @finally {
