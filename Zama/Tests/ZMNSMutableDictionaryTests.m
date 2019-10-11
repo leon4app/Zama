@@ -8,8 +8,8 @@
 #import <XCTest/XCTest.h>
 @import Zama;
 @interface ZMNSMutableDictionaryTests : XCTestCase
-@property(nonatomic, copy) NSString *nilStr;
-@property(nonatomic, retain) NSMutableDictionary *dict;
+@property (nonatomic, copy) NSString *nilStr;
+@property (nonatomic, retain) NSMutableDictionary *dict;
 @end
 
 @implementation ZMNSMutableDictionaryTests

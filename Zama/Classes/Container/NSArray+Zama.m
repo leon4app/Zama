@@ -69,7 +69,6 @@
             continue;
         }
         newObjects[newObjsIndex++] = objc;
-
     }
     return [self zm_arrayWithObjects:newObjects count:newObjsIndex];
 }

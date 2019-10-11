@@ -8,9 +8,9 @@
 #import <XCTest/XCTest.h>
 @import Zama;
 
-@interface TestObject:NSObject
-@property(nonatomic) TestObject *anotherObject;
-@property(nonatomic, copy) NSString *username;
+@interface TestObject : NSObject
+@property (nonatomic) TestObject *anotherObject;
+@property (nonatomic, copy) NSString *username;
 @end
 
 @implementation TestObject
@@ -55,7 +55,7 @@
 - (void)testSetValuesForKeysWithDictionary {
     NSDictionary *dict;
     TestObject *obj = [TestObject new];
-    
+
     dict = @{@"aaa": @"aaa"};
     [obj setValuesForKeysWithDictionary:dict];
     XCTAssertNil([obj valueForKey:@"aaa"]);

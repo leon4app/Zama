@@ -18,6 +18,6 @@
 *  5. - (void)getObjects:(__unsafe_unretained id  _Nonnull *)objects range:(NSRange)range
  [NSArray alloc] -> _NSPlaceHolderArray 暂不处理
 */
-@interface NSArray (Zama)<ZamaProtectProtocol>
+@interface NSArray (Zama) <ZamaProtectProtocol>
 
 @end

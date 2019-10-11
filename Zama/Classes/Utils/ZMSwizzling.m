@@ -102,9 +102,7 @@ void zamazenta_exchange_instance_method(Class anClass, SEL orginalMethodSel, SEL
                             newMethodSel,
                             method_getImplementation(originalMethod),
                             method_getTypeEncoding(originalMethod));
-    }
-
-    else {
+    } else {
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }

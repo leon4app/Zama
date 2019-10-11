@@ -19,7 +19,7 @@
 @property (nonatomic) void (^observeValueCallback)(void);
 @end
 @implementation ZMAObserver
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey, id> *)change context:(void *)context {
     if (self.context == context || !context) {
         self.observeValueCallback();
     }
@@ -64,10 +64,10 @@
     [self.observable addObserver:self.observer forKeyPath:@"name" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     XCTestExpectation *expect = [self expectationWithDescription:@"Test KVO normal callback."];
     self.observer.observeValueCallback = ^{
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Warc-retain-cycles"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
         XCTFail(@"移除观察者后不应收到通知");
-        #pragma clang diagnostic pop
+#pragma clang diagnostic pop
     };
     [self.observable removeObserver:self.observer forKeyPath:@"name"];
     self.observable.name = @"Hank";
@@ -81,10 +81,10 @@
     [self.observable addObserver:self.observer forKeyPath:@"name" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"aaa"];
     XCTestExpectation *expect = [self expectationWithDescription:@"Test KVO normal callback."];
     self.observer.observeValueCallback = ^{
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Warc-retain-cycles"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
         XCTFail(@"移除观察者后不应收到通知");
-        #pragma clang diagnostic pop
+#pragma clang diagnostic pop
     };
     [self.observable removeObserver:self.observer forKeyPath:@"name" context:@"aaa"];
     self.observable.name = @"Hank";

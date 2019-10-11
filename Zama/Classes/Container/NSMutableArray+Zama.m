@@ -64,7 +64,7 @@
 - (void)zm_setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
     if (obj) {
         if (idx > self.count) {
-            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:)) ,@(idx), @(self.count)];
+            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(setObject:atIndexedSubscript:)), @(idx), @(self.count)];
             [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
         } else {
             return [self zm_setObject:obj atIndexedSubscript:idx];
@@ -86,7 +86,7 @@
 
 - (void)zm_removeObjectAtIndex:(NSUInteger)index {
     if (index >= self.count) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(removeObjectAtIndex:)) ,@(index), @(self.count)];
+        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@] : index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(removeObjectAtIndex:)), @(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeContainer)];
     } else {
         [self zm_removeObjectAtIndex:index];
