@@ -32,29 +32,29 @@
 @implementation Zama
 
 + (void)startProtect {
-    [self registerStabilityWithAbility:(ZMProtectTypeExceptDanglingPointer)];
+    [self startProtectWithType:(ZMProtectTypeExceptDanglingPointer)];
 }
 
-+ (void)registerStabilityWithAbility:(ZMProtectType)ability {
-    if (ability & ZMProtectTypeUnrecognizedSelector) {
++ (void)startProtectWithType:(ZMProtectType)type {
+    if (type & ZMProtectTypeUnrecognizedSelector) {
         [self protectUnrecognizedSelector];
     }
-    if (ability & ZMProtectTypeContainer) {
+    if (type & ZMProtectTypeContainer) {
         [self protectContainer];
     }
-    if (ability & ZMProtectTypeNSNull) {
+    if (type & ZMProtectTypeNSNull) {
         [self protectNSNull];
     }
-    if (ability & ZMProtectTypeKVO) {
+    if (type & ZMProtectTypeKVO) {
         [self protectKVO];
     }
-    if (ability & ZMProtectTypeKVC) {
+    if (type & ZMProtectTypeKVC) {
         [self protectKVC];
     }
-    if (ability & ZMProtectTypeTimer) {
+    if (type & ZMProtectTypeTimer) {
         [self protectTimer];
     }
-    if (ability & ZMProtectTypeString) {
+    if (type & ZMProtectTypeString) {
         [self protectString];
     }
 }

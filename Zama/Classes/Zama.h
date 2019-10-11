@@ -49,6 +49,7 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
 
 + (void)startProtect;
 
++ (void)startProtectWithType:(ZMProtectType)type;
 @end
 
 NS_ASSUME_NONNULL_END
