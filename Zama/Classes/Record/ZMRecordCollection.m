@@ -18,22 +18,21 @@
 @end
 
 @implementation ZMExceptionRecord
-- (NSString *)descriptionForType:(ZMProtectType)type {
-    switch (type) {
+- (NSString *)typeDescription {
+    switch (self.type) {
         case ZMProtectTypeUnrecognizedSelector: return @"ZMProtectTypeUnrecognizedSelector";
         case ZMProtectTypeContainer: return @"ZMProtectTypeContainer";
         case ZMProtectTypeNSNull: return @"ZMProtectTypeNSNull";
         case ZMProtectTypeKVO: return @"ZMProtectTypeKVO";
         case ZMProtectTypeTimer: return @"ZMProtectTypeTimer";
         case ZMProtectTypeDanglingPointer: return @"ZMProtectTypeDanglingPointer";
-        case ZMProtectTypeString:
-            return @"ZMProtectTypeString";
-        default: return [NSString stringWithFormat:@"%lu", (unsigned long)type];
+        case ZMProtectTypeString: return @"ZMProtectTypeString";
+        default: return [NSString stringWithFormat:@"%lu", (unsigned long)self.type];
     }
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"type: %@, reason: %@\n*** First throw call stack:\n%@", [self descriptionForType:self.type], self.reason, self.callStackSymbols];
+    return [NSString stringWithFormat:@"type: %@, reason: %@\n*** First throw call stack:\n%@", self.typeDescription, self.reason, self.callStackSymbols];
 }
 @end
 
