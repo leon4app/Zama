@@ -102,4 +102,29 @@
     XCTAssertNotNil(valueArray);
     XCTAssert(valueArray.count == 0);
 }
+
+- (void)testSubarrayWithRange {
+    NSArray *valueArray;
+    // __NSSingleObjectArrayI
+    array = @[@""];
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 1)];
+    XCTAssert(valueArray.count == 1);
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 2)];
+    XCTAssertNil(valueArray);
+
+    // __NSArrayI
+    array = @[@"1", @"2", @"3"];
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 1)];
+    XCTAssert(valueArray.count == 1);
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 20)];
+    XCTAssertNil(valueArray);
+
+    // __NSArray0
+    array = [NSArray array];
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 0)];
+    XCTAssertNotNil(valueArray);
+    XCTAssert(valueArray.count == 0);
+    valueArray = [array subarrayWithRange:NSMakeRange(0, 2)];
+    XCTAssertNil(valueArray);
+}
 @end

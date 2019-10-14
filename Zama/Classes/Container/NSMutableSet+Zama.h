@@ -9,7 +9,11 @@
 #import "ZamaProtectProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+/**
+ Can avoid crash method:
+ - addObject:
+ - removeObject:
+ */
 @interface NSMutableSet (Zama) <ZamaProtectProtocol>
 
 @end

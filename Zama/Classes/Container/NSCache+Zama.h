@@ -9,9 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 /**
-Can avoid crash method:
-1. setObject:forKey:
-2. setObject:forKey:cost:
+ Can avoid crash method:
+ - setObject:forKey:
+ - setObject:forKey:cost:
  */
 @interface NSCache (Zama) <ZamaProtectProtocol>
 

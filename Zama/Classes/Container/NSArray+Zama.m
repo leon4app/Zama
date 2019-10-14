@@ -54,6 +54,8 @@
 
         //objectsAtIndexes:
         zamazenta_exchange_instance_method(__NSArray, @selector(objectsAtIndexes:), @selector(zm_objectsAtIndexes:));
+
+        zamazenta_exchange_instance_method([self class], @selector(subarrayWithRange:), @selector(zm_subarrayWithRange:));
     });
 }
 
@@ -156,5 +158,16 @@
         index = [indexes indexGreaterThanIndex:index];
     }
     return [self zm_objectsAtIndexes:indexes];
+}
+
+- (NSArray *)zm_subarrayWithRange:(NSRange)range {
+    NSArray *subArray;
+    @try {
+        subArray = [self zm_subarrayWithRange:range];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
+    } @finally {
+        return subArray;
+    }
 }
 @end
