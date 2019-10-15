@@ -83,21 +83,10 @@
         return nil;
     }
 
-    if (index >= self.count) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-        return nil;
-    }
-
     return [self zm_NSArray0_objectAtIndex:index];
 }
 
 - (id)zm_NSSingleObjectArrayI_objectAtIndex:(NSUInteger)index {
-    if (self.count == 0) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-        return nil;
-    }
 
     if (index >= self.count) {
         NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
@@ -109,12 +98,6 @@
 }
 
 - (id)zm_NSArrayI_objectAtIndex:(NSUInteger)index {
-    if (self.count == 0) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-        return nil;
-    }
-
     if (index >= self.count) {
         NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
@@ -126,12 +109,6 @@
 
 #pragma mark - hook @selector(objectAtIndexedSubscript:)
 - (id)zm_NSArrayI_objectAtIndexedSubscript:(NSUInteger)index {
-    if (self.count == 0) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)), @(index)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-        return nil;
-    }
-
     if (index >= self.count) {
         NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndexedSubscript:)), @(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
