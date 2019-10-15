@@ -24,10 +24,12 @@
         case ZMProtectTypeContainer: return @"ZMProtectTypeContainer";
         case ZMProtectTypeNSNull: return @"ZMProtectTypeNSNull";
         case ZMProtectTypeKVO: return @"ZMProtectTypeKVO";
+        case ZMProtectTypeKVC: return @"ZMProtectTypeKVC";
         case ZMProtectTypeTimer: return @"ZMProtectTypeTimer";
         case ZMProtectTypeDanglingPointer: return @"ZMProtectTypeDanglingPointer";
         case ZMProtectTypeString: return @"ZMProtectTypeString";
-        default: return [NSString stringWithFormat:@"%lu", (unsigned long)self.type];
+        case ZMProtectTypeExceptDanglingPointer: return [NSString stringWithFormat:@"%lu", (unsigned long)self.type];
+        //        default: return [NSString stringWithFormat:@"%lu", (unsigned long)self.type];
     }
 }
 
@@ -38,10 +40,15 @@
 
 @implementation ZMRecordCollection
 
-__weak static id<ZMExceptionRecordHandlerProtocol> __record;
+__weak static id<ZMExceptionRecordHandlerProtocol> __recordHandler;
 
-+ (void)registerRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)record {
-    __record = record;
++ (void)registerRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)recordHandler {
+    __recordHandler = recordHandler;
+}
++ (void)unregisterRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)recordHandler {
+    if ([__recordHandler isEqual:recordHandler]) {
+        __recordHandler = nil;
+    }
 }
 
 + (void)recordFatalWithException:(NSException *)exception errorType:(ZMProtectType)type {
@@ -52,8 +59,8 @@ __weak static id<ZMExceptionRecordHandlerProtocol> __record;
     record.userInfo = exception.userInfo;
     record.callStackSymbols = exception.callStackSymbols;
     record.callStackReturnAddresses = exception.callStackReturnAddresses;
-    if ([__record respondsToSelector:@selector(recordException:)]) {
-        [__record recordException:record];
+    if ([__recordHandler respondsToSelector:@selector(recordException:)]) {
+        [__recordHandler recordException:record];
     }
 }
 
@@ -65,8 +72,8 @@ __weak static id<ZMExceptionRecordHandlerProtocol> __record;
     record.reason = reason.length ? reason : @"未知原因";
     record.callStackSymbols = NSThread.callStackSymbols;
     record.callStackReturnAddresses = NSThread.callStackReturnAddresses;
-    if ([__record respondsToSelector:@selector(recordException:)]) {
-        [__record recordException:record];
+    if ([__recordHandler respondsToSelector:@selector(recordException:)]) {
+        [__recordHandler recordException:record];
     }
 }
 

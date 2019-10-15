@@ -118,4 +118,7 @@
     [ZMRecordCollection registerRecordHandler:handler];
 }
 
++ (void)unregisterRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)handler {
+    [ZMRecordCollection unregisterRecordHandler:handler];
+}
 @end

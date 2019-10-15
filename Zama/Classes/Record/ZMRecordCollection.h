@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  注册异常日志处理者
  */
-+ (void)registerRecordHandler:(nullable id<ZMExceptionRecordHandlerProtocol>)record;
-
++ (void)registerRecordHandler:(nullable id<ZMExceptionRecordHandlerProtocol>)recordHandler;
++ (void)unregisterRecordHandler:(nullable id<ZMExceptionRecordHandlerProtocol>)recordHandler;
 /**
 汇报Crash
 

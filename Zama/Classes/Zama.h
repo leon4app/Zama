@@ -49,6 +49,8 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
  */
 + (void)registerRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)handler;
 
++ (void)unregisterRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)handler;
+
 + (void)startProtect;
 
 + (void)startProtectWithType:(ZMProtectType)type;
