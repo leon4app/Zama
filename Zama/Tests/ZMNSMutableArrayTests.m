@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSMutableArrayTests : XCTestCase {
+@interface ZMNSMutableArrayTests : XCTestCase <ZMExceptionRecordHandlerProtocol> {
     NSMutableArray *mutableArray;
 }
 @property (nonatomic, copy) NSString *nilStr;
@@ -16,8 +16,18 @@
 @implementation ZMNSMutableArrayTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
     mutableArray = @[@""].mutableCopy;
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeContainer);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
 - (void)testInsertNil {

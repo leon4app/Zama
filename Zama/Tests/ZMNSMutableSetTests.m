@@ -7,14 +7,24 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSMutableSetTests : XCTestCase
+@interface ZMNSMutableSetTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 
 @end
 
 @implementation ZMNSMutableSetTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeContainer);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
 - (void)testAddObject {

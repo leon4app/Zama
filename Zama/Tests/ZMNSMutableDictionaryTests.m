@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSMutableDictionaryTests : XCTestCase
+@interface ZMNSMutableDictionaryTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 @property (nonatomic, copy) NSString *nilStr;
 @property (nonatomic, retain) NSMutableDictionary *dict;
 @end
@@ -15,9 +15,19 @@
 @implementation ZMNSMutableDictionaryTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
     _dict = [NSMutableDictionary dictionary];
     [_dict setObject:@"111" forKey:@"222"];
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeContainer);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
 - (void)testSetObjectForKey {

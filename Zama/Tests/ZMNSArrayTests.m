@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSArrayTests : XCTestCase {
+@interface ZMNSArrayTests : XCTestCase  <ZMExceptionRecordHandlerProtocol> {
     NSArray *array;
 }
 @property (nonatomic, copy) NSString *nilStr;
@@ -16,7 +16,17 @@
 @implementation ZMNSArrayTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeContainer);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
 - (void)testInsertNil {

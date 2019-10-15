@@ -7,14 +7,24 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSNullTests : XCTestCase
+@interface ZMNSNullTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 
 @end
 
 @implementation ZMNSNullTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeNSNull);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeNSNull"]);
 }
 
 - (void)testNSNullProtect {

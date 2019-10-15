@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 @import Zama;
-@interface ZMNSMutableStringTests : XCTestCase
+@interface ZMNSMutableStringTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 @property (nonatomic, copy) NSString *nilStr;
 @property (nonatomic, retain) NSMutableString *textStr;
 @end
@@ -15,8 +15,18 @@
 @implementation ZMNSMutableStringTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
     self.textStr = @"0123456789".mutableCopy;
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeString);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeString"]);
 }
 
 - (void)testReplaceCharactersInRangeWithString {
