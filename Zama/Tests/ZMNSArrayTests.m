@@ -42,6 +42,19 @@
     XCTAssert(array.count == 2);
 }
 
+- (void)testInitWithObjectsCount {
+    id _Nonnull __unsafe_unretained objects[1];
+    array = [[NSArray alloc] initWithObjects:objects count:1];
+    XCTAssertNotNil(array);
+    XCTAssert(array.count == 0);
+
+    objects[0] = @"str";
+    array = [[NSArray alloc] initWithObjects:objects count:1];
+    XCTAssertNotNil(array);
+    XCTAssert(array.count == 1);
+    XCTAssert([array[0] isEqualToString:@"str"]);
+}
+
 - (void)testObjectAtIndexedSubscript {
     id value;
     // __NSSingleObjectArrayI

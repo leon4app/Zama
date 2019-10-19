@@ -43,6 +43,9 @@
         Class __NSArrayI = NSClassFromString(@"__NSArrayI");
         Class __NSSingleObjectArrayI = NSClassFromString(@"__NSSingleObjectArrayI");
         Class __NSArray0 = NSClassFromString(@"__NSArray0");
+        Class __NSPlaceholderArray = NSClassFromString(@"__NSPlaceholderArray");
+
+        zamazenta_exchange_instance_method(__NSPlaceholderArray, @selector(initWithObjects:count:), @selector(zm_NSPlaceholderArray_initWithObjects:count:));
 
         //objectAtIndex:
         zamazenta_exchange_instance_method(__NSArrayI, @selector(objectAtIndex:), @selector(zm_NSArrayI_objectAtIndex:));
@@ -57,6 +60,21 @@
 
         zamazenta_exchange_instance_method([self class], @selector(subarrayWithRange:), @selector(zm_subarrayWithRange:));
     });
+}
+
+- (instancetype)zm_NSPlaceholderArray_initWithObjects:(id  _Nonnull const [])objects count:(NSUInteger)cnt {
+    NSInteger newObjsIndex = 0;
+    id _Nonnull __unsafe_unretained newObjects[cnt];
+    for (int i = 0; i < cnt; i++) {
+        id objc = objects[i];
+        if (objc == nil) {
+            NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: attempt to insert nil object from objects[%d]", [self class], NSStringFromSelector(@selector(arrayWithObjects:count:)), i];
+            [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+            continue;
+        }
+        newObjects[newObjsIndex++] = objc;
+    }
+    return [self zm_NSPlaceholderArray_initWithObjects:newObjects count:newObjsIndex];
 }
 
 #pragma mark - hook @selector(arrayWithObjects:)
