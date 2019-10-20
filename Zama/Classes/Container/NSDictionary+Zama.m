@@ -15,7 +15,20 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         zamazenta_exchange_class_method(self, @selector(dictionaryWithObjects:forKeys:count:), @selector(zm_dictionaryWithObjects:forKeys:count:));
+
+        zamazenta_exchange_instance_method([self class], @selector(initWithObjects:forKeys:), @selector(zm_initWithObjects:forKeys:));
     });
+}
+#warning [__NSPlaceholderDictionary initWithObjects:forKeys:]
+- (instancetype)zm_initWithObjects:(NSArray *)objects forKeys:(NSArray<id<NSCopying>> *)keys {
+    NSDictionary *dict;
+    @try {
+        dict = [self zm_initWithObjects:objects forKeys:keys];
+    } @catch (NSException *exception) {
+        [ZMRecordCollection recordFatalWithException:exception errorType:ZMProtectTypeContainer];
+    } @finally {
+        return dict;
+    }
 }
 
 + (instancetype)zm_dictionaryWithObjects:(id _Nonnull const[])objects forKeys:(id<NSCopying> _Nonnull const[])keys count:(NSUInteger)cnt {

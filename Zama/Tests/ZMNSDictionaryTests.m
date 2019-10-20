@@ -27,7 +27,19 @@
     XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
-- (void)testNSDictionary {
+- (void)testInitWithObjectsForKeys {
+    NSDictionary *dict;
+    dict = [[NSDictionary alloc] initWithObjects:@[@""] forKeys:@[_nilStr]];
+    XCTAssertNil(dict);
+    dict = [[NSDictionary alloc] initWithObjects:@[@""] forKeys:@[]];
+    XCTAssertNil(dict);
+    dict = [[NSDictionary alloc] initWithObjects:@[] forKeys:@[@"aaa"]];
+    XCTAssertNil(dict);
+    dict = [[NSDictionary alloc] initWithObjects:@[@""] forKeys:@[@"aaa"]];
+    XCTAssertNotNil(dict);
+}
+
+- (void)testDictionaryWithObjectsForKeysCount {
     NSDictionary *dict;
     dict = @{_nilStr: @""};
     XCTAssert(dict.count == 0);
