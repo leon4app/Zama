@@ -32,7 +32,6 @@
         //   class method
         //=================
 
-        //instance array method exchange
         zamazenta_exchange_class_method([self class], @selector(arrayWithObjects:count:), @selector(zm_arrayWithObjects:count:));
 
         //====================
@@ -95,17 +94,12 @@
 
 #pragma mark - hook @selector(objectAtIndex:)
 - (id)zm_NSArray0_objectAtIndex:(NSUInteger)index {
-    if (self.count == 0) {
-        NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
-        [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
-        return nil;
-    }
-
-    return [self zm_NSArray0_objectAtIndex:index];
+    NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds for empty NSArray", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index)];
+    [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
+    return nil;
 }
 
 - (id)zm_NSSingleObjectArrayI_objectAtIndex:(NSUInteger)index {
-
     if (index >= self.count) {
         NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: index %@ beyond bounds [0 .. %@]", [self class], NSStringFromSelector(@selector(objectAtIndex:)), @(index), @(self.count)];
         [ZMRecordCollection recordFatalWithReason:reason errorType:ZMProtectTypeContainer];
