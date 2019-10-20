@@ -19,7 +19,7 @@
         zamazenta_exchange_instance_method([self class], @selector(initWithObjects:forKeys:), @selector(zm_initWithObjects:forKeys:));
     });
 }
-#warning [__NSPlaceholderDictionary initWithObjects:forKeys:]
+
 - (instancetype)zm_initWithObjects:(NSArray *)objects forKeys:(NSArray<id<NSCopying>> *)keys {
     NSDictionary *dict;
     @try {
