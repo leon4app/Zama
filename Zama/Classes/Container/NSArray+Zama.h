@@ -14,8 +14,7 @@
  - objectsAtIndexes:
  - objectAtIndexedSubscript
  - subarrayWithRange:
- 
- [NSArray alloc] -> _NSPlaceHolderArray 暂不处理
+ - initWithObjects:count:
 */
 @interface NSArray (Zama) <ZamaProtectProtocol>
 

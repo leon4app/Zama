@@ -29,7 +29,7 @@
     XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeContainer"]);
 }
 
-- (void)testInsertNil {
+- (void)testArrayWithObjectsCount {
     // __NSSingleObjectArrayI
     array = @[@"", _nilStr];
     XCTAssert(array.count == 1);
@@ -40,6 +40,19 @@
     XCTAssert(array.count == 3);
     array = @[@"1", @"2"];
     XCTAssert(array.count == 2);
+}
+
+- (void)testInitWithObjectsCount {
+    id _Nonnull __unsafe_unretained objects[1];
+    array = [[NSArray alloc] initWithObjects:objects count:1];
+    XCTAssertNotNil(array);
+    XCTAssert(array.count == 0);
+
+    objects[0] = @"str";
+    array = [[NSArray alloc] initWithObjects:objects count:1];
+    XCTAssertNotNil(array);
+    XCTAssert(array.count == 1);
+    XCTAssert([array[0] isEqualToString:@"str"]);
 }
 
 - (void)testObjectAtIndexedSubscript {
@@ -94,8 +107,7 @@
     XCTAssertNotNil(valueArray);
     XCTAssert(valueArray.count == 1);
     valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 8)]];
-    XCTAssertNotNil(valueArray);
-    XCTAssert(valueArray.count == 0);
+    XCTAssertNil(valueArray);
 
     // __NSArrayI
     array = @[@"1", @"2", @"3"];
@@ -103,14 +115,12 @@
     XCTAssertNotNil(valueArray);
     XCTAssert(valueArray.count == 2);
     valueArray = [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 8)]];
-    XCTAssertNotNil(valueArray);
-    XCTAssert(valueArray.count == 0);
+    XCTAssertNil(valueArray);
 
     // __NSArray0
     array = [NSArray array];
     [array objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 8)]];
-    XCTAssertNotNil(valueArray);
-    XCTAssert(valueArray.count == 0);
+    XCTAssertNil(valueArray);
 }
 
 - (void)testSubarrayWithRange {

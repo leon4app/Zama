@@ -20,16 +20,12 @@
         //objectAtIndexedSubscript: iOS 11+
         zamazenta_exchange_instance_method(arrayMClass, @selector(objectAtIndexedSubscript:), @selector(zm_objectAtIndexedSubscript:));
 
-        //insertObject:atIndex:
         zamazenta_exchange_instance_method(arrayMClass, @selector(insertObject:atIndex:), @selector(zm_insertObject:atIndex:));
 
-        //addObject:
         zamazenta_exchange_instance_method(arrayMClass, @selector(addObject:), @selector(zm_addObject:));
 
-        //setObject:atIndexedSubscript:
         zamazenta_exchange_instance_method(arrayMClass, @selector(setObject:atIndexedSubscript:), @selector(zm_setObject:atIndexedSubscript:));
 
-        //removeObjectAtIndex:
         zamazenta_exchange_instance_method(arrayMClass, @selector(removeObjectAtIndex:), @selector(zm_removeObjectAtIndex:));
     });
 }
