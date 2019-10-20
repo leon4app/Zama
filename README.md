@@ -23,6 +23,10 @@ it, simply add the following line to your Podfile:
 pod 'Zama'
 ```
 
+## TODOs
+
+- [ ] Add options to adjust exception behavior for those like containers, especially those init method(return nil or empty container or try to return as more valid elements as possible) 
+
 ## Author
 
 leon4app, leon4w@outlook.com

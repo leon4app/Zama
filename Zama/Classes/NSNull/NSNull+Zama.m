@@ -19,29 +19,23 @@
     });
 }
 // https://github.com/nicklockwood/NullSafe
-- (NSMethodSignature *)zm_methodSignatureForSelector:(SEL)selector
-{
-    NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: unrecognized selector sent to instance %p",
-                        [self class], NSStringFromSelector(selector), self];
+- (NSMethodSignature *)zm_methodSignatureForSelector:(SEL)selector {
+    NSString *reason = [NSString stringWithFormat:@"*** -[%@ %@]: unrecognized selector sent to instance %p", [self class], NSStringFromSelector(selector), self];
     [ZMRecordCollection recordFatalWithReason:reason errorType:(ZMProtectTypeNSNull)];
     //look up method signature
     NSMethodSignature *signature = [super methodSignatureForSelector:selector];
 
-    if (!signature)
-    {
+    if (!signature) {
         for (Class someClass in @[
-            [NSMutableArray class],
-            [NSMutableDictionary class],
-            [NSMutableString class],
-            [NSNumber class],
-            [NSDate class],
-            [NSData class]
-        ])
-        {
-            @try
-            {
-                if ([someClass instancesRespondToSelector:selector])
-                {
+                 [NSMutableArray class],
+                 [NSMutableDictionary class],
+                 [NSMutableString class],
+                 [NSNumber class],
+                 [NSDate class],
+                 [NSData class]
+             ]) {
+            @try {
+                if ([someClass instancesRespondToSelector:selector]) {
                     signature = [someClass instanceMethodSignatureForSelector:selector];
                     break;
                 }
@@ -52,8 +46,7 @@
     return signature;
 }
 
-- (void)zm_forwardInvocation:(NSInvocation *)invocation
-{
+- (void)zm_forwardInvocation:(NSInvocation *)invocation {
     invocation.target = nil;
     [invocation invoke];
 }
