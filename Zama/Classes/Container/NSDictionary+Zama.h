@@ -10,8 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 /**
-Can avoid crash method:
-1. dictionaryWithObjects:forKeys:count:
+ Can avoid crash method:
+ - dictionaryWithObjects:forKeys:count:
+ - initWithObjects:forKeys:
  */
 @interface NSDictionary (Zama) <ZamaProtectProtocol>
 

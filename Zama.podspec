@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Zama'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Zamazenta, a pokemon to protect app from crash.'
   s.description      = <<-DESC
 Zamazenta is a pokemon, let's get it and protect our app from crashing!

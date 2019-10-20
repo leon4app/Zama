@@ -19,14 +19,24 @@
 //}
 @end
 
-@interface ZMKVCTests : XCTestCase
+@interface ZMKVCTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 
 @end
 
 @implementation ZMKVCTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
+}
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeKVC);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeKVC"]);
 }
 
 - (void)testValueForKey {

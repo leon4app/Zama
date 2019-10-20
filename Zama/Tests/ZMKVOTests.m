@@ -26,7 +26,7 @@
 }
 @end
 
-@interface ZMKVOTests : XCTestCase
+@interface ZMKVOTests : XCTestCase <ZMExceptionRecordHandlerProtocol>
 @property (nonatomic) ZMAObservable *observable;
 @property (nonatomic) ZMAObserver *observer;
 @end
@@ -34,10 +34,21 @@
 @implementation ZMKVOTests
 
 - (void)setUp {
+    [Zama registerRecordHandler:self];
     [Zama startProtect];
     self.observable = [ZMAObservable new];
     self.observer = [ZMAObserver new];
 }
+
+- (void)tearDown {
+    [Zama unregisterRecordHandler:self];
+}
+
+- (void)recordException:(ZMExceptionRecord *)record {
+    XCTAssert(record.type == ZMProtectTypeKVO);
+    XCTAssert([record.typeDescription isEqualToString: @"ZMProtectTypeKVO"]);
+}
+
 // 正常情况
 - (void)testNotifyNomally {
     [self.observable addObserver:self.observer forKeyPath:@"name" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];

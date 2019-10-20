@@ -1,19 +1,20 @@
 //
-//  NSCache+Zama.h
+//  NSMutableSet+Zama.h
 //  Zama
 //
-//  Created by Leon on 2019/9/24.
+//  Created by Leon on 2019/10/14.
 //
+
 #import <Foundation/Foundation.h>
 #import "ZamaProtectProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 /**
  Can avoid crash method:
- - setObject:forKey:
- - setObject:forKey:cost:
+ - addObject:
+ - removeObject:
  */
-@interface NSCache (Zama) <ZamaProtectProtocol>
+@interface NSMutableSet (Zama) <ZamaProtectProtocol>
 
 @end
 

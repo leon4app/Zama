@@ -25,11 +25,13 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
 @interface ZMExceptionRecord : NSObject
 
 @property (readonly) ZMProtectType type; ///< 异常类型
-@property (readonly, copy) NSExceptionName name;
-@property (nullable, readonly, copy) NSDictionary *userInfo;
-@property (nullable, readonly, copy) NSString *reason; ///< 异常原因
-@property (readonly, copy) NSArray<NSNumber *> *callStackReturnAddresses;
-@property (readonly, copy) NSArray<NSString *> *callStackSymbols;
+@property (readonly) NSString *typeDescription;
+@property (readonly) NSExceptionName name;
+@property (nullable, readonly) NSDictionary *userInfo;
+@property (nullable, readonly) NSString *reason; ///< 异常原因
+@property (readonly) NSArray<NSNumber *> *callStackReturnAddresses;
+@property (readonly) NSArray<NSString *> *callStackSymbols;
+
 @end
 
 @protocol ZMExceptionRecordHandlerProtocol <NSObject>
@@ -46,6 +48,8 @@ typedef NS_OPTIONS(NSUInteger, ZMProtectType) {
  @param handler 异常日志处理者
  */
 + (void)registerRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)handler;
+
++ (void)unregisterRecordHandler:(id<ZMExceptionRecordHandlerProtocol>)handler;
 
 + (void)startProtect;
 

@@ -9,14 +9,12 @@
 
 /**
  Can avoid crash method:
- 1. objectAtIndex:
- 2. objectAtIndexedSubscript:
- 3. insertObject:atIndex:
- 4. setObject:atIndexedSubscript:
- 5. removeObjectAtIndex:
-
- // TODO:
-*  4. - (void)getObjects:(__unsafe_unretained id  _Nonnull *)objects range:(NSRange)range
+ - objectAtIndex:
+ - objectAtIndexedSubscript:
+ - insertObject:atIndex:
+ - addObject
+ - setObject:atIndexedSubscript:
+ - removeObjectAtIndex:
 */
 @interface NSMutableArray (Zama)<ZamaProtectProtocol>
 

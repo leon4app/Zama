@@ -9,12 +9,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 /**
-*  Can avoid crash method
-*
-*  1. - (void)setObject:(id)anObject forKey:(id<NSCopying>)aKey
-*  2. - (void)setObject:(id)anObject forKeyedSubscript:(id<NSCopying>)aKey
-*  2. - (void)removeObjectForKey:(id)aKey
-*
+ Can avoid crash method:
+ - setObject:forKey:
+ - setObject:forKeyedSubscript:
+ - removeObjectForKey:
 */
 @interface NSMutableDictionary (Zama) <ZamaProtectProtocol>
 
