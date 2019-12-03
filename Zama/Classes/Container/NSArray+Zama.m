@@ -59,6 +59,10 @@
 }
 
 - (instancetype)zm_NSPlaceholderArray_initWithObjects:(id  _Nonnull const [])objects count:(NSUInteger)cnt {
+    if (cnt > 1000) {
+        // Won't check if cnt > 1000 to reduce memory pressure.
+        return [self zm_NSPlaceholderArray_initWithObjects:objects count:cnt];
+    }
     NSInteger newObjsIndex = 0;
     id _Nonnull __unsafe_unretained newObjects[cnt];
     for (int i = 0; i < cnt; i++) {
@@ -75,6 +79,10 @@
 
 #pragma mark - hook @selector(arrayWithObjects:)
 + (instancetype)zm_arrayWithObjects:(const id _Nonnull __unsafe_unretained *)objects count:(NSUInteger)cnt {
+    if (cnt > 1000) {
+        // Won't check if cnt > 1000 to reduce memory pressure.
+        return [self zm_arrayWithObjects:objects count:cnt];
+    }
     NSInteger newObjsIndex = 0;
     id _Nonnull __unsafe_unretained newObjects[cnt];
     for (int i = 0; i < cnt; i++) {

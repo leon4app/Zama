@@ -40,6 +40,13 @@
     XCTAssert(array.count == 3);
     array = @[@"1", @"2"];
     XCTAssert(array.count == 2);
+    // Array with capacity exceed 1000
+    id _Nonnull __unsafe_unretained newObjects[1005];
+    for (int i = 0; i < 1005; i ++) {
+        newObjects[i] = @(i);
+    }
+    array = [NSArray arrayWithObjects:newObjects count:1005];
+    XCTAssert(array.count == 1005);
 }
 
 - (void)testInitWithObjectsCount {
@@ -53,6 +60,14 @@
     XCTAssertNotNil(array);
     XCTAssert(array.count == 1);
     XCTAssert([array[0] isEqualToString:@"str"]);
+
+    // Array with capacity exceed 1000
+    id _Nonnull __unsafe_unretained newObjects[1005];
+    for (int i = 0; i < 1005; i ++) {
+        newObjects[i] = @(i);
+    }
+    array = [[NSArray alloc] initWithObjects:newObjects count:1005];
+    XCTAssert(array.count == 1005);
 }
 
 - (void)testObjectAtIndexedSubscript {
