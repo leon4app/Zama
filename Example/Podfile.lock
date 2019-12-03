@@ -1,6 +1,6 @@
 PODS:
-  - Zama (0.1.0)
-  - Zama/Tests (0.1.0)
+  - Zama (0.1.1)
+  - Zama/Tests (0.1.1)
 
 DEPENDENCIES:
   - Zama (from `../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Zama: 1d5121771a9865f6d1bd4ef63c839794a13f2eaf
+  Zama: 213490f18f49944a6f637dfa43e69dd77edb8371
 
 PODFILE CHECKSUM: fc54ca5cc5dfaadd6dd26dd0b64ec46e0025cdf4
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4

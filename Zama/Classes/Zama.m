@@ -30,9 +30,15 @@
 
 @end
 
+static ZMProtectType _enabledType = 0;
+
 @implementation Zama
 
 + (void)startProtect {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeExceptDanglingPointer;
+    });
     [self startProtectWithType:(ZMProtectTypeExceptDanglingPointer)];
 }
 
@@ -58,11 +64,19 @@
     if (type & ZMProtectTypeString) {
         [self protectString];
     }
+    if (type & ZMProtectTypeDanglingPointer) {
+        [self protectDanglingPointer];
+    }
+}
+
++ (ZMProtectType)enabledType {
+    return _enabledType;
 }
 
 + (void)protectNSNull {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeNSNull;
         [NSNull zmStartProtect];
     });
 }
@@ -70,6 +84,7 @@
 + (void)protectContainer {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeContainer;
         [NSArray zmStartProtect];
         [NSMutableArray zmStartProtect];
         [NSDictionary zmStartProtect];
@@ -82,12 +97,14 @@
 + (void)protectUnrecognizedSelector {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeUnrecognizedSelector;
     });
 }
 
 + (void)protectKVO {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeKVO;
         [NSObject zmStartProtectKVO];
     });
 }
@@ -95,6 +112,7 @@
 + (void)protectKVC {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeKVC;
         [NSObject zmStartProtectKVC];
     });
 }
@@ -102,15 +120,23 @@
 + (void)protectTimer {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-
+        _enabledType = _enabledType | ZMProtectTypeTimer;
     });
 }
 
 + (void)protectString {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeString;
         [NSString zmStartProtect];
         [NSMutableString zmStartProtect];
+    });
+}
+
++ (void)protectDanglingPointer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _enabledType = _enabledType | ZMProtectTypeDanglingPointer;
     });
 }
 
